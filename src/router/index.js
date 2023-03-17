@@ -1,17 +1,16 @@
-import Vue from 'vue'
-import VueRouter from "vue-router"; //引入vue-router组件
+import { createRouter, createWebHistory } from 'vue-router'
 
-Vue.use(VueRouter);
-
-export const constantRouterMap = [
-    //配置默认的路径，默认显示登录页
-    { path: '/', component: () => import('@/views/login/login')},
-
+const routes = [
+    {
+        path: '/',
+        name: 'home',
+        component: () => import('@/views/home/home')
+    }
 ]
 
-export default new VueRouter({
-    // mode: 'history', //后端支持可开
-    scrollBehavior: () => ({ y: 0 }),
-    routes: constantRouterMap //指定路由列表
+const router = createRouter({
+    history: createWebHistory(),
+    routes
 })
 
+export default router
