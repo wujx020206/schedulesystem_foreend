@@ -1,11 +1,13 @@
-import { createApp } from 'vue'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-import App from './App.vue'
-import router from './router'
+import Vue from "vue";
+import App from "./App";
+import router from "./router/index";
 
-const app = createApp(App)
+import PaperDashboard from "./plugins/paperDashboard";
+import "vue-notifyjs/themes/default.css";
 
-app.use(ElementPlus)
-app.mount('#app')
-app.use(router)
+Vue.use(PaperDashboard);
+
+new Vue({
+  router,
+  render: (h) => h(App),
+}).$mount("#app");
