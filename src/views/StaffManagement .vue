@@ -1,10 +1,14 @@
 <template>
   <div class="card">
-    <button type="button" class="btn btn-success" style="height: 38px;width: 150px">新增</button>
-    <button type="button" class="btn btn-danger" style="height: 38px;width: 150px">删除</button>
-    <button type="button" class="btn btn-warning" style="height: 38px;width: 150px">修改</button>
-    <button type="button" class="btn btn-info" style="height: 38px;width: 150px">查询</button>
-    
+    <div class="Button">
+      <el-row>
+        <button type="button" class="btn btn-success" style="margin-right:12%">新增</button>
+        <button type="button" class="btn btn-danger" style="margin-right:12%">删除</button>
+        <button type="button" class="btn btn-warning" style="margin-right:12%">修改</button>
+        <button type="button" class="btn btn-info">查询</button>
+      </el-row>
+    </div>
+
     <div class="table-responsive">
       <table class="table align-items-center mb-0">
         <thead>
@@ -201,12 +205,7 @@ export default {};
 </script>
 
 <style>
-  .el-row {
-    margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+  
   .el-col {
     border-radius: 4px;
   }
@@ -228,7 +227,9 @@ export default {};
     background-color: #f9fafc;
   }
 
-  .btn btn-success,.btn btn-danger,.btn btn-warning,.btn btn-info {
-    display: inline;
+  .card .Button button{
+    height: 38px;
+    width: 16%;
   }
+
 </style>
