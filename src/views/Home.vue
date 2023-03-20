@@ -1,8 +1,8 @@
 <template>
-  <div class="mt-4 col-xl-4 col-lg-5 mt-lg-0">
+  <div class="mt-4 col-xl-5 col-lg-5 mt-lg-0">
     <div class="mb-4 card">
       <div class="p-3 card-body">
-        <div class="d-flex flex-row-reverse justify-content-between">
+        <div class="d-flex flex-row-center justify-content-between">
           <div>
             <div>
               <FullCalendar class="fullCalendar" ref="fullCalendar" :options="calendarOptions"/>
