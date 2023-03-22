@@ -80,7 +80,7 @@ export default {
   #selectP { //选中后圆圈颜色
     width: 30px;
     height: 30px;
-    background-color: #2596be;
+    background-color: #ACC8CE;
     position: absolute;
     border-radius: 50%;
     opacity: 0.6;
@@ -88,7 +88,7 @@ export default {
 
   ::v-deep .el-calendar__header {
     // 修改头部背景颜色
-    background-color: #a0abca;
+    background-color: #C5D1D4;
     padding: 3px 5px;
     border: none;
     display: flex;
@@ -117,7 +117,7 @@ export default {
       th {
         // 修改头部星期部分
         padding: 0;
-        background-color: #a0abca;
+        background-color: #C5D1D4;
         color: white;
         text-align: center;
       }
@@ -173,20 +173,20 @@ export default {
     padding: 3px 10px;
   }
   .el-button--success{ //日按钮
-    background: #23C6C8;
-    border-color: #8cd8da;
+    background: #B4D9E1;
+    border-color: #B4D9E1;
   }
   .el-button--warning{ //月按钮
-    background: #FCB065;
-    border-color: #FCB065;
+    background: #98C6D0;
+    border-color: #98C6D0;
   }
   .el-button--primary{ //年按钮
-    background: #c680b9;
-    border-color: #c680b9;
+    background: #80B1BA;
+    border-color: #80B1BA;
   }
   .el-button--info{ //今天按钮
-    background: #cbbdc9;
-    border-color: #cbbdc9;
+    background: #C7E8EF;
+    border-color: #C7E8EF;
   }
 }
 
