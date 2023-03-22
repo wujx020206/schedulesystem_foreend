@@ -4,18 +4,19 @@
       <div class="card">
         <div class="card-header">
           <div class="col-sm-6">
-            <el-input v-model="input" placeholder="请输入内容"></el-input>
-            <el-select v-model="value" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-            <button type="button" class="btn btn-info">查询</button>
-            <button type="button" class="btn btn-success" style="margin-right:12%">新增</button>
-        </div>
+            <div class="zhujian">
+              <el-input v-model="input" placeholder="请输入内容" style="margin-right: 4px;"></el-input>
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+              <el-button type="success" style="margin-left: 4px; margin-bottom: auto;">查询</el-button>
+            </div>
+          </div>
       </div>
         <div class="card-body table-responsive table-full-width">
           <el-table :row-class-name="tableRowClassName"
@@ -116,4 +117,12 @@ export default {
   .el-select-width{
     margin-left: 0px;
   }
+  .zhujian{
+    display: flex;
+    justify-content: center;
+  }
+  .zhujian .el-button--success{ 
+    background: #68B3C8;
+    border-color: #68B3C8;
+    }
 </style>

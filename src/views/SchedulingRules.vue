@@ -4,24 +4,26 @@
         <div class="card">
           <div class="card-header">
             <div class="col-sm-6">
-              <el-select v-model="value" placeholder="请选择">
-                <el-option
-                  v-for="item in storeoptions"
-                  :key="item.storevalue"
-                  :label="item.storelabel"
-                  :value="item.storevalue">
-                </el-option>
-              </el-select>
-              <el-select v-model="value" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-              <button type="button" class="btn btn-info">查询</button>
-              <button type="button" class="btn btn-success" style="margin-right:12%">新增</button>
+              <div class="Box">
+                <el-select v-model="value" placeholder="请选择">
+                  <el-option
+                    v-for="item in storeoptions"
+                    :key="item.storevalue"
+                    :label="item.storelabel"
+                    :value="item.storevalue">
+                  </el-option>
+                </el-select>
+                <el-select v-model="value" placeholder="请选择" style="margin-left: 4px;">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <el-button type="success" style="margin-left: 4px; margin-bottom: auto;">查询</el-button>
+                
+              </div>
           </div>
         </div>
           <div class="card-body table-responsive table-full-width">
@@ -123,4 +125,19 @@
     .el-select-width{
       margin-left: 0px;
     }
+    .Box{
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      align-items: baseline;
+    }
+    .Box .el-button--success{ 
+    background: #68B3C8;
+    border-color: #68B3C8;
+    }
+    .Box .el-button--info{
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
   </style>

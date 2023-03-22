@@ -11,7 +11,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期">
             </el-date-picker>
-            <button type="button" class="btn btn-info">查询</button>
+            <button type="button" class="btn btn-info" style="margin-bottom: 2.5px; margin-left:4px">查询</button>
         </div>
       </div>
         <div class="card-body table-responsive table-full-width">

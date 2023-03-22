@@ -43,6 +43,7 @@ const routes = [
         name:"preference",
         component: Prefenence
       }
+      
     ],
   },
   { path: "*", component: NotFound },
