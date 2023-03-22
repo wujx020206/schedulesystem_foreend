@@ -1,8 +1,131 @@
 <template>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="title">门店管理</h4>
+            <div class="col-sm-6">
+              <el-select
+                class="select-default"
+                v-model="pagination.perPage"
+                placeholder="Per page">
+                <el-option
+                  class="select-default"
+                  v-for="item in pagination.perPageOptions"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </div>
+        </div>
+        <div class="card-body table-responsive table-full-width">
+          <el-table :row-class-name="tableRowClassName"
+                    :data="tableData">
+            <el-table-column label="门店编号" property="id" width="100px"></el-table-column>
+            <el-table-column label="门店名称" property="name"></el-table-column>
+            <el-table-column label="所在城市" property="country"></el-table-column>
+            <el-table-column label="所在地区" property="city"></el-table-column>
+            <el-table-column label="操作" property="操作">
+              <template slot-scope="scope">
+                <p-button type="info" icon @click.native="handleEdit(row)">
+                  <i class="ti ti-pencil-alt"></i>
+                </p-button>
+                <p-button style="margin-left: 5px;" type="danger" icon @click.native="handleDelete(row)">
+                  <i class="ti ti-close"></i>
+                </p-button>
+              </template>
+            </el-table-column>
+          </el-table>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {};
+import { PaperTable } from "@/components";
+import { FormGroupInput as FGInput } from "@/components";
+export default {
+  components: {
+    PaperTable,
+    FGInput
+  },
+    data() {
+      return {
+        title: "门店管理",
+        tableColumns: ["Id", "Name", "Salary", "Country", "City"],
+        tableData: [
+          {
+            id: 1,
+            name: "Dakota Rice",
+            salary: "$36.738",
+            country: "Niger",
+            city: "Oud-Turnhout"
+          },
+          {
+            id: 2,
+            name: "Minerva Hooper",
+            salary: "$23,789",
+            country: "Curaçao",
+            city: "Sinaai-Waas"
+          },
+          {
+            id: 3,
+            name: "Sage Rodriguez",
+            salary: "$56,142",
+            country: "Netherlands",
+            city: "Baileux"
+          },
+          {
+            id: 4,
+            name: "Philip Chaney",
+            salary: "$38,735",
+            country: "Korea, South",
+            city: "Overland Park"
+          },
+          {
+            id: 5,
+            name: "Doris Greene",
+            salary: "$63,542",
+            country: "Malawi",
+            city: "Feldkirchen in Kärnten"
+          }
+        ],
+        pagination: {
+          perPage: 5,
+          currentPage: 1,
+          perPageOptions: [5, 10, 25, 50],
+        },
+      }
+    },
+    methods: {
+      handleEdit(row) {
+        console.log(`You want to edit row with id: ${row.id}`)
+      },
+      handleDelete(row) {
+        console.log(`You want to delete row with id: ${row.id}`)
+      },
+      tableRowClassName ({row, rowIndex}) {
+        if (rowIndex%8 === 0) {
+          return 'table-success'
+        } else if (rowIndex%8 === 2) {
+          return 'table-info'
+        } else if (rowIndex%8 === 4) {
+          return 'table-danger'
+        } else if (rowIndex%8 === 6) {
+          return 'table-warning'
+        }
+        return ''
+      }
+    }
+};
 </script>
 
-<style></style>
+<style>
+  .el-select-width{
+    margin-left: 0px;
+
+  }
+</style>
