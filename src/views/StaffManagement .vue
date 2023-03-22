@@ -1,10 +1,19 @@
 <template>
   <div class="card">
+    <div>
+      <el-select v-model="value" placeholder="请选择">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-input v-model="input" placeholder="请输入内容"></el-input>
+    </div>
     <div class="Button">
       <el-row>
         <button type="button" class="btn btn-success" style="margin-right:12%">新增</button>
-        <button type="button" class="btn btn-danger" style="margin-right:12%">删除</button>
-        <button type="button" class="btn btn-warning" style="margin-right:12%">修改</button>
         <button type="button" class="btn btn-info">查询</button>
       </el-row>
     </div>
@@ -44,9 +53,14 @@
             <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
           </td>
           <td class="align-middle">
-            <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-              Edit
+            <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+              修改     
             </a>
+            <div>
+              <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user">
+                删除
+              </a>
+            </div>
           </td>
         </tr>
 
@@ -74,8 +88,13 @@
           </td>
           <td class="align-middle">
             <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-              Edit
+              修改     
             </a>
+            <div>
+              <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user">
+                删除
+              </a>
+            </div>
           </td>
         </tr>
 
@@ -103,8 +122,13 @@
           </td>
           <td class="align-middle">
             <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-              Edit
+              修改     
             </a>
+            <div>
+              <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user">
+                删除
+              </a>
+            </div>
           </td>
         </tr>
 
@@ -132,8 +156,13 @@
           </td>
           <td class="align-middle">
             <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-              Edit
+              修改     
             </a>
+            <div>
+              <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user">
+                删除
+              </a>
+            </div>
           </td>
         </tr>
 
@@ -161,8 +190,13 @@
           </td>
           <td class="align-middle">
             <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-              Edit
+              修改     
             </a>
+            <div>
+              <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user">
+                删除
+              </a>
+            </div>
           </td>
         </tr>
 
@@ -190,8 +224,13 @@
           </td>
           <td class="align-middle">
             <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-              Edit
+              修改     
             </a>
+            <div>
+              <a href="#!" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user">
+                删除
+              </a>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -201,7 +240,28 @@
 </template>
 
 <script>
-export default {};
+  export default {
+    data() {
+      return {
+        options: [{
+          value: '选项1',
+          label: '门店1'
+        }, {
+          value: '选项2',
+          label: '门店2'
+        }, {
+          value: '选项3',
+          label: '门店3'
+        }],
+        value: '选择门店'
+      }
+    },
+    data() {
+    return {
+      input: ''
+      }
+    }
+  }
 </script>
 
 <style>
