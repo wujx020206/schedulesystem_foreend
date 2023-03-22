@@ -1,13 +1,119 @@
 <template>
-
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="col-sm-6">
+            <el-input v-model="input" placeholder="请输入内容"></el-input>
+            <el-select v-model="value" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <button type="button" class="btn btn-info">查询</button>
+            <button type="button" class="btn btn-success" style="margin-right:12%">新增</button>
+        </div>
+      </div>
+        <div class="card-body table-responsive table-full-width">
+          <el-table :row-class-name="tableRowClassName"
+                    :data="tableData">
+            <el-table-column label="员工编号" property="id"></el-table-column>
+            <el-table-column label="员工名" property="name"></el-table-column>
+            <el-table-column label="偏好类别" property="type"></el-table-column>
+            <el-table-column label="偏好值" property="value"></el-table-column>
+            <el-table-column label="操作" property="操作">
+              <template slot-scope="scope">
+                <p-button type="info" icon @click.native="handleEdit(row)">
+                  <i class="ti ti-pencil-alt"></i>
+                </p-button>
+                <p-button style="margin-left: 5px;" type="danger" icon @click.native="handleDelete(row)">
+                  <i class="ti ti-close"></i>
+                </p-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import { PaperTable } from "@/components";
+import { FormGroupInput as FGInput } from "@/components";
 export default {
-  name: "StaffPreferences"
-}
+  components: {
+    PaperTable,
+    FGInput
+  },
+    data() {
+      return {
+        input: '',
+        options: [{
+          value: '选项1',
+          label: '工作日偏好'
+        }, {
+          value: '选项2',
+          label: '工作时间偏好'
+        }, {
+          value: '选项3',
+          label: '班次时长偏好'
+        }],
+        value: '',
+        value1: [new Date(2023, 2, 13, 8, 0), new Date(2023, 2, 19, 8, 0)],
+        value2: '',
+        title: "门店管理",
+        tableColumns: ["Id", "Name", "Type", "Value"],
+        tableData: [
+          {
+            id: "1",
+            name: "wjx",
+            type: "工作日偏好",
+            value: "3"
+          },
+          {
+            id: "2",
+            name: "ymt",
+            type: "班次时长偏好",
+            value: "2"
+          },
+          {
+            id: "3",
+            name: "lmf",
+            type: "工作时间偏好",
+            value: "9"
+          }
+        ],
+      }
+    },
+    methods: {
+      handleEdit(row) {
+        console.log(`You want to edit row with id: ${row.id}`)
+      },
+      handleDelete(row) {
+        console.log(`You want to delete row with id: ${row.id}`)
+      },
+      tableRowClassName ({row, rowIndex}) {
+        if (rowIndex%8 === 0) {
+          return 'table-success'
+        } else if (rowIndex%8 === 2) {
+          return 'table-info'
+        } else if (rowIndex%8 === 4) {
+          return 'table-danger'
+        } else if (rowIndex%8 === 6) {
+          return 'table-warning'
+        }
+        return ''
+      }
+    }
+};
 </script>
 
-<style scoped>
-
+<style>
+  .el-select-width{
+    margin-left: 0px;
+  }
 </style>

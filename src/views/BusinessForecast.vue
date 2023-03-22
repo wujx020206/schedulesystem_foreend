@@ -13,7 +13,7 @@
             </el-date-picker>
             <button type="button" class="btn btn-info">查询</button>
         </div>
-        </div>
+      </div>
         <div class="card-body table-responsive table-full-width">
           <el-table :row-class-name="tableRowClassName"
                     :data="tableData">
@@ -90,9 +90,6 @@ export default {
     },
     methods: {
       tableRowClassName ({row, rowIndex}) {
-        if (rowIndex%2 != 1) {
-          return 'table-info'
-        }
         return ''
       }
     }
