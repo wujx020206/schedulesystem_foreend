@@ -36,8 +36,34 @@
               </template>
             </el-table-column>
           </el-table>
+          <div style="margin-top: 10px">
+          <p-button block type="success" @click.native="handleAdd">
+            <i class="ti-plus"/>
+            新增偏好
+          </p-button>
+          </div>
         </div>
       </div>
+      <el-dialog title="新增偏好" :visible.sync="dialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="员工编号" prop="id" style="width: 45%;">
+            <el-input v-model.number="ruleForm.id"></el-input>
+          </el-form-item>
+          <el-form-item label="员工名称" prop="name" style="width: 45%;">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="偏好类别" prop="type" style="width: 45%;">
+            <el-input v-model="ruleForm.type"></el-input>
+          </el-form-item>
+          <el-form-item label="偏好值" prop="value" style="width: 45%;">
+            <el-input v-model="ruleForm.value"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm">立即创建</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -51,7 +77,20 @@ export default {
     FGInput
   },
     data() {
+      var checkId = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入门店编号'));
+        }
+        setTimeout( ()=>{
+          if(!Number.isInteger(value))
+            callback(new Error('请输入数字值'));
+          else {
+            callback();
+          }
+        },500);
+      };
       return {
+        dialogFormVisible: false,
         input: '',
         options: [{
           value: '选项1',
@@ -66,7 +105,7 @@ export default {
         value: '',
         value1: [new Date(2023, 2, 13, 8, 0), new Date(2023, 2, 19, 8, 0)],
         value2: '',
-        title: "门店管理",
+        title: "偏好管理",
         tableColumns: ["Id", "Name", "Type", "Value"],
         tableData: [
           {
@@ -84,15 +123,40 @@ export default {
           {
             id: "3",
             name: "lmf",
-            type: "工作时间偏好",
-            value: "9"
+            type: "没有偏好",
+            value: "null"
           }
         ],
+        ruleForm: {
+          id: '',
+          name: '',
+          type:'',
+          value: ''
+        },
+        rules: {
+          id: [
+            { required:true, validator: checkId, trigger: 'blur' },
+          ],
+          name:[
+            {required:true,message:'请输入门店名称',trigger:'blur'}
+          ],
+          type: [
+            { required: true, message: '请输入规则类型', trigger: 'blur' }
+          ],
+          value: [
+            { required: true, message: '请输入规则值', trigger: 'blur' }
+          ]
+        },
+        formLabelWidth: '120px',
+
       }
     },
     methods: {
       handleEdit(row) {
         console.log(`You want to edit row with id: ${row.id}`)
+      },
+      handleAdd() {
+        this.dialogFormVisible=true
       },
       handleDelete(row) {
         console.log(`You want to delete row with id: ${row.id}`)
@@ -108,6 +172,20 @@ export default {
           return 'table-warning'
         }
         return ''
+      },
+      submitForm() {
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            alert('submit!');
+            this.dialogFormVisible=false
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm() {
+        this.$refs.ruleForm.resetFields();
       }
     }
 };

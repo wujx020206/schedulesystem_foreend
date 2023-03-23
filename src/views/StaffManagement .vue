@@ -24,6 +24,7 @@
             <el-table-column label="员工" property="name"></el-table-column>
             <el-table-column label="职位" property="position"> </el-table-column>   
             <el-table-column label="联系电话" property="phonenumber"></el-table-column>
+            <el-table-column label="电子邮箱" property="email"></el-table-column>
             <el-table-column label="所属门店" property="storename"></el-table-column>
             <el-table-column label="操作" property="操作">
               <template slot-scope="scope">
@@ -36,8 +37,41 @@
               </template>
             </el-table-column>
           </el-table>
+          <div style="margin-top: 10px">
+          <p-button block type="success" @click.native="handleAdd">
+            <i class="ti-plus"/>
+            新增员工
+          </p-button>
+          </div>
         </div>
       </div>
+      <el-dialog title="新增员工" :visible.sync="dialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="员工姓名" prop="name" style="width: 45%;">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="员工职位" prop="position" style="width: 45%;">
+            <el-input v-model="ruleForm.position"></el-input>
+          </el-form-item>
+          <el-form-item label="联系电话" prop="phonenumber" style="width: 45%;">
+            <el-input v-model="ruleForm.phonenumber"></el-input>
+          </el-form-item>
+          <el-form-item label="电子邮箱" prop="email" style="width: 45%;">
+            <el-input v-model="ruleForm.email"></el-input>
+          </el-form-item>
+          <el-form-item label="门店名称" prop="storename">
+            <el-select v-model="ruleForm.storename" placeholder="请选择所在门店">
+              <el-option label="门店1" value="store1"></el-option>
+              <el-option label="门店2" value="store2"></el-option>
+              <el-option label="门店3" value="store3"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm">立即创建</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -52,60 +86,101 @@ export default {
   },
     data() {
       return {
-        spanArr: [],
+        dialogFormVisible: false,
         value1: [new Date(2023, 2, 13, 8, 0), new Date(2023, 2, 19, 8, 0)],
         value2: '',
-        title: "门店管理",
-        tableColumns: ["name", "position", "phonenumber", "storename"],
+        title: "员工管理",
+        tableColumns: ["name", "position", "phonenumber", "storename", "email"],
         tableData: [
           {
             name: "Lily",
             position: "manager",
             phonenumber: "123456",
             storename: "La marine",
+            email:"sdadasfsdad@qq.com"
           },
           {
             name: "Bob",
             position: "asistant manager",
             phonenumber: "123488",
             storename: "La marine",
+            email:"414dad@qq.com"
           },
           {
             name: "Lin",
             position: "cashier",
             phonenumber: "888888",
             storename: "Noma",
+            email:"sdadgad@qq.com"
           },
           {
             name: "W",
             position: "cashier",
             phonenumber: "8788888",
             storename: "Noma",
+            email:"sd4567456d@qq.com"
           },
           {
             name: "Xoe",
             position: "guider",
             phonenumber: "884326",
             storename: "Noma",
+            email:"sdss4224dad@qq.com"
           },
           {
             name: "BBi",
             position: "guider",
             phonenumber: "7468794",
             storename: "X",
+            email:"sp64fsdad@qq.com"
           },
           {
             name: "Sb",
             position: "cashier",
             phonenumber: "8465488",
             storename: "Noma",
+            email:"sdadad@qq.com"
           },
 
         ],
+        ruleForm: {
+          name: '',
+          position: '',
+          phonenumber:'',
+          storename: '',
+          email: ''
+        },
+        rules: {
+          name:[
+            {required:true,message:'请输入员工名称',trigger:'blur'}
+          ],
+          position:[
+            {required:true,message:'请输入员工职位',trigger:'blur'}
+          ],
+          phonenumber:[
+            {required:true,message:'请输入员工电话号码',trigger:'blur'}
+          ],
+          email:[
+            {required:true,message:'请输入员工电子邮件',trigger:'blur'}
+          ],
+          storename: [
+            {required: true, message: '请选择所在店铺', trigger: 'change'}
+          ]
+        },
+        formLabelWidth: '120px',
       }
     },
 
   methods: {
+    handleEdit(row) {
+        console.log(`You want to edit row with id: ${row.id}`)
+      },
+      handleAdd() {
+        this.dialogFormVisible=true
+      },
+      handleDelete(row) {
+        console.log(`You want to delete row with id: ${row.id}`)
+      },
     tableRowClassName ({row, rowIndex}) {
         if (rowIndex%8 === 0) {
           return 'table-success'
@@ -118,6 +193,20 @@ export default {
         }
         return ''
       },
+      submitForm() {
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            alert('submit!');
+            this.dialogFormVisible=false
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm() {
+        this.$refs.ruleForm.resetFields();
+      }
   }
 
 };

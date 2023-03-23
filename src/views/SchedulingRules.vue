@@ -44,8 +44,40 @@
                 </template>
               </el-table-column>
             </el-table>
+            <div style="margin-top: 10px">
+            <p-button block type="success" @click.native="handleAdd">
+              <i class="ti-plus"/>
+              新增规则
+            </p-button>
+            </div>          
           </div>
         </div>
+        <el-dialog title="新增规则" :visible.sync="dialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="门店名称" prop="id">
+            <el-select v-model="ruleForm.id" placeholder="请选择所在门店">
+              <el-option label="门店1" value="store1"></el-option>
+              <el-option label="门店2" value="store2"></el-option>
+              <el-option label="门店3" value="store"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="规则大类" prop="type1" style="width: 45%;">
+            <el-input v-model="ruleForm.type1"></el-input>
+          </el-form-item>
+          <el-form-item label="规则小类" prop="type2" style="width: 45%;">
+            <el-input v-model="ruleForm.type2"></el-input>
+          </el-form-item>
+          <el-form-item label="规则内容" prop="value" style="width: 45%;">
+            <el-input v-model="ruleForm.value"></el-input>
+          </el-form-item>
+          
+          <el-form-item>
+            <el-button type="primary" @click="submitForm">立即创建</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>  
       </div>
     </div>
   </template>
@@ -60,6 +92,7 @@
     },
       data() {
         return {
+          dialogFormVisible: false,
           storeoptions: [{
             storevalue: '选项1',
             storelabel: '门店1'
@@ -105,6 +138,26 @@
               value: "2点"
             }
           ],
+          ruleForm: {
+          id: '',
+          type1: '',
+          type2:'',
+          value: ''
+        },
+        rules: {
+          id: [
+            { required:true, message:'请选择门店', trigger: 'change'},
+          ],
+          type1:[
+            {required:true,message:'请输入规则大类',trigger:'blur'}
+          ],
+          type2:[
+            {required:true,message:'请输入规则小类',trigger:'blur'}
+          ],
+          value:[
+            {required:true,message:'请输入规则值',trigger:'blur'}
+          ],
+        },
         }
       },
       methods: {
@@ -114,8 +167,25 @@
         handleDelete(row) {
           console.log(`You want to delete row with id: ${row.id}`)
         },
+        handleAdd() {
+        this.dialogFormVisible=true
+        },
         tableRowClassName ({row, rowIndex}) {
           return ''
+        },
+        submitForm() {
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            alert('submit!');
+            this.dialogFormVisible=false
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+        },
+        resetForm() {
+          this.$refs.ruleForm.resetFields();
         }
       }
   };

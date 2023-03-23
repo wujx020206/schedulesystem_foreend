@@ -17,7 +17,7 @@
                   :value="item">
                 </el-option>
               </el-select>
-              <p-button style="margin-left: 5px" type="default">查询</p-button>
+              <p-button style="margin-left: 5px;margin-bottom: 0.7%;" type="default">查询</p-button>
             </div>
         </div>
         <div class="card-body table-responsive table-full-width">
@@ -48,10 +48,10 @@
       </div>
       <el-dialog title="新增门店" :visible.sync="dialogFormVisible">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="门店编号" prop="id">
+          <el-form-item label="门店编号" prop="id" style="width: 45%;">
             <el-input v-model.number="ruleForm.id"></el-input>
           </el-form-item>
-          <el-form-item label="门店名称" prop="name">
+          <el-form-item label="门店名称" prop="name" style="width: 45%;">
             <el-input v-model="ruleForm.name"></el-input>
           </el-form-item>
           <el-form-item label="所在城市" prop="city">
