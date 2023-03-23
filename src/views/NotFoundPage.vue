@@ -1,5 +1,6 @@
 <template>
   <div class="contact-us full-screen">
+    <meta http-equiv="refresh" content="3;URL=/home">
     <nav class="navbar navbar-ct-default" role="navigation-demo">
       <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -73,6 +74,19 @@ export default {
       document
       .querySelector('body')
       .setAttribute('style', 'background-color:#f4f3ef')
-  }
+  },
+  data(){
+      return{
+        initTime:5
+      }
+    },
+    methods:{
+      leftTime(){
+        this.initTime--
+      }
+    },
+    created(){
+      setInterval(this.leftTime, 100)
+    }
 };
 </script>
