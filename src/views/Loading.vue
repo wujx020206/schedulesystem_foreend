@@ -1,7 +1,7 @@
 <template>
 <html lang="en"><head>
   <meta charset="UTF-8">
-
+    <meta http-equiv="refresh" content="5;URL=/home">
     <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png">
 
     <meta name="apple-mobile-web-app-title" content="CodePen">
@@ -118,4 +118,21 @@ body {
 
 <script>
   window.console = window.console || function(t) {};
+  export default{
+    data(){
+      return{
+        initTime:5
+      }
+    },
+    methods:{
+      leftTime(){
+        this.initTime--
+      }
+    },
+    created(){
+      setInterval(this.leftTime, 100)
+    }
+
+}
+
 </script>
