@@ -17,6 +17,7 @@
                   :value="item">
                 </el-option>
               </el-select>
+              <p-button style="margin-left: 5px" type="default">查询</p-button>
             </div>
         </div>
         <div class="card-body table-responsive table-full-width">
@@ -37,9 +38,40 @@
               </template>
             </el-table-column>
           </el-table>
-
+          <div style="margin-top: 10px">
+          <p-button block type="success" @click.native="handleAdd">
+            <i class="ti-plus"/>
+            新增门店
+          </p-button>
+          </div>
         </div>
       </div>
+      <el-dialog title="新增门店" :visible.sync="dialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="门店编号" prop="id">
+            <el-input v-model.number="ruleForm.id"></el-input>
+          </el-form-item>
+          <el-form-item label="门店名称" prop="name">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="所在城市" prop="city">
+            <el-select v-model="ruleForm.city" placeholder="请选择所在城市">
+              <el-option label="Nige" value="shanghai"></el-option>
+              <el-option label="Curaçao" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所在区域" prop="region">
+            <el-select v-model="ruleForm.region" placeholder="请选择所在区域">
+              <el-option label="Nige" value="city1"></el-option>
+              <el-option label="Curaçao" value="city2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitForm">立即创建</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -53,7 +85,20 @@ export default {
     FGInput
   },
     data() {
+      var checkId = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入门店编号'));
+        }
+        setTimeout( ()=>{
+          if(!Number.isInteger(value))
+            callback(new Error('请输入数字值'));
+          else {
+            callback();
+          }
+        },500);
+      };
       return {
+        dialogFormVisible: false,
         title: "门店管理",
         tableColumns: ["Id", "Name", "Salary", "Country", "City"],
         tableData: [
@@ -98,34 +143,68 @@ export default {
           currentPage: 1,
           perPageOptions: [5, 10, 25, 50],
         },
+        ruleForm: {
+          id: '',
+          name: '',
+          city:'',
+          region: ''
+        },
+        rules: {
+          id: [
+            { required:true, validator: checkId, trigger: 'blur' },
+          ],
+          name:[
+            {required:true,message:'请输入门店名称',trigger:'blur'}
+          ],
+          city: [
+            { required: true, message: '请选择所在城市', trigger: 'change' }
+          ],
+          region: [
+            { required: true, message: '请选择活动区域', trigger: 'change' }
+          ]
+        },
+        formLabelWidth: '120px',
       }
     },
     methods: {
       handleEdit(row) {
         console.log(`You want to edit row with id: ${row.id}`)
       },
+      handleAdd() {
+        this.dialogFormVisible=true
+      },
       handleDelete(row) {
         console.log(`You want to delete row with id: ${row.id}`)
       },
       tableRowClassName ({row, rowIndex}) {
         if (rowIndex%8 === 0) {
-          return 'table-success'
+          return 'table-warning'
         } else if (rowIndex%8 === 2) {
           return 'table-info'
         } else if (rowIndex%8 === 4) {
           return 'table-danger'
         } else if (rowIndex%8 === 6) {
-          return 'table-warning'
+          return 'table-success'
         }
         return ''
+      },
+      submitForm() {
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            alert('submit!');
+            this.dialogFormVisible=false
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm() {
+        this.$refs.ruleForm.resetFields();
       }
     }
 };
 </script>
 
 <style>
-  .el-select-width{
-    margin-left: 0px;
-
-  }
 </style>
