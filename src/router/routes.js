@@ -1,5 +1,6 @@
 import HomeLayout from "@/layout/HomeLayout.vue";
 import NotFound from "@/views/NotFoundPage.vue";
+import Loading from "@/views/Loading.vue";
 import Home from "@/views/Home.vue";
 import StaffManagement from "@/views/StaffManagement .vue";
 import StoreManagement from "@/views/StoreManagement.vue";
@@ -11,8 +12,13 @@ const routes = [
   {
     path: "/",
     component: HomeLayout,
-    redirect: "/home",
+    redirect: "/redirect",
     children: [
+      {
+        path: "/redirect",
+        name: "redirect",
+        component: Loading
+      },
       {
         path: "/home",
         name: "home",
