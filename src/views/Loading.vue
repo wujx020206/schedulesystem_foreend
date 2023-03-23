@@ -119,6 +119,11 @@ body {
 <script>
   window.console = window.console || function(t) {};
   export default{
+    beforeCreate() {
+      document
+      .querySelector('body')
+      .setAttribute('style', 'background-color:#f4f3ef')
+    },
     data(){
       return{
         initTime:5
