@@ -11,14 +11,13 @@ import Prefenence from "@/views/StaffPreferences.vue";
 const routes = [
   {
     path: "/",
+    component: Loading,
+  },
+  {
+    path: "/",
     component: HomeLayout,
-    redirect: "/redirect",
+    redirect: "/home",
     children: [
-      {
-        path: "/redirect",
-        name: "redirect",
-        component: Loading
-      },
       {
         path: "/home",
         name: "home",
