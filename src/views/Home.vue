@@ -1,4 +1,34 @@
 <template>
+  <div>
+    <el-row :gutter="20">
+      <el-col :span="7" :offset="3">
+        <stats-card>
+          <div class="icon-big text-center" :class="`icon-info`" slot="header">
+            <i class="ti-home"></i>
+          </div>
+          <div class="numbers" slot="content">
+            <p>门店数量</p>30
+          </div>
+          <div class="stats" slot="footer">
+            <i class="ti-reload"></i>Updated now
+          </div>
+        </stats-card>
+      </el-col>
+      <el-col :span="7" :offset="2">
+        <stats-card>
+          <div class="icon-big text-center" :class="`icon-success`" slot="header">
+            <i class="ti-user"></i>
+          </div>
+          <div class="numbers" slot="content">
+            <p>员工数量</p>375
+          </div>
+          <div class="stats" slot="footer">
+            <i class="ti-reload"></i>Updated now
+          </div>
+        </stats-card>
+      </el-col>
+    </el-row>
+
   <div id="customizedCalendar">
     <el-calendar
         :first-day-of-week=7
@@ -28,17 +58,53 @@
       </el-button>
     </div>
   </div>
+  <!--
+    <el-row>
+      <el-col :offset="2">
+    <div class="col-10">
+    <b-calendar
+      block locale="zh" today-variant="info" nav-button-variant="primary"
+      class="border rounded p-4" style="background: white"
+      v-bind="labels[locale] || {}"/>
+    </div>
+      </el-col>
+    </el-row>
+    -->
+  </div>
 </template>
 
 <script>
 import moment from 'moment'
 import PubSub from 'pubsub-js'
+import StatsCard from "@/components/Cards/StatsCard";
 
 export default {
+  components: {
+    StatsCard,
+  },
   name: "Calendar",
   data() {
     return {
-      value: new Date()
+      value: new Date(),
+      locale: 'zh',
+      labels: {
+        zh: {
+          weekdayHeaderFormat: 'narrow',
+          labelPrevDecade: '过去十年',
+          labelPrevYear: '上一年',
+          labelPrevMonth: '上个月',
+          labelCurrentMonth: '当前月份',
+          labelNextMonth: '下个月',
+          labelNextYear: '明年',
+          labelNextDecade: '下一个十年',
+          labelToday: '今天',
+          labelSelected: '选定日期',
+          labelNoDateSelected: '未选择日期',
+          labelCalendar: '日历',
+          labelNav: '日历导航',
+          labelHelp: '使用光标键浏览日期'
+        }
+      }
     }
   },
   computed: {
