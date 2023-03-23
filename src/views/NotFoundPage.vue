@@ -68,5 +68,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  beforeCreate() {
+      document
+      .querySelector('body')
+      .setAttribute('style', 'background-color:#f4f3ef')
+  }
+};
 </script>
