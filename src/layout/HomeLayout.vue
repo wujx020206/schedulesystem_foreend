@@ -5,7 +5,7 @@
         <sidebar-link to="/home" name="主页" icon="ti-home" />
         <sidebar-link to="/store" name="门店管理" icon="ti-bell" />
         <sidebar-link to="/staff" name="员工管理" icon="ti-user"/>
-        <sidebar-link to="/preference" name="员工偏好管理" icon="ti-heart"/>
+        <sidebar-link to="/preference" name="偏好管理" icon="ti-heart"/>
         <sidebar-link to="/scheduling" name="排班规则管理" icon="ti-view-list-alt"/>
         <sidebar-link to="/business" name="业务预测数据管理" icon="ti-stats-up" />
       </template>
