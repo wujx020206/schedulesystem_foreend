@@ -13,7 +13,7 @@
                     :value="item.storevalue">
                   </el-option>
                 </el-select>
-                <el-select v-model="value" placeholder="请选择" style="margin-left: 4px;">
+                <el-select v-model="value2" placeholder="请选择" style="margin-left: 4px;">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -22,7 +22,7 @@
                   </el-option>
                 </el-select>
                 <el-button type="success" style="margin-left: 4px; margin-bottom: auto;">查询</el-button>
-                
+
               </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
               <i class="ti-plus"/>
               新增规则
             </p-button>
-            </div>          
+            </div>
           </div>
         </div>
         <el-dialog title="新增规则" :visible.sync="dialogFormVisible">
@@ -71,17 +71,17 @@
           <el-form-item label="规则内容" prop="value" style="width: 45%;">
             <el-input v-model="ruleForm.value"></el-input>
           </el-form-item>
-          
+
           <el-form-item>
             <el-button type="primary" @click="submitForm">立即创建</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
-      </el-dialog>  
+      </el-dialog>
       </div>
     </div>
   </template>
-  
+
   <script>
   import { PaperTable } from "@/components";
   import { FormGroupInput as FGInput } from "@/components";
@@ -190,7 +190,7 @@
       }
   };
   </script>
-  
+
   <style>
     .el-select-width{
       margin-left: 0px;
@@ -201,7 +201,7 @@
       flex-direction: row;
       align-items: baseline;
     }
-    .Box .el-button--success{ 
+    .Box .el-button--success{
     background: #68B3C8;
     border-color: #68B3C8;
     }
