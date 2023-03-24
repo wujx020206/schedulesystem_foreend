@@ -7,7 +7,7 @@
             <i class="ti-home"></i>
           </div>
           <div class="numbers" slot="content">
-            <p>门店数量</p>30
+            <p>门店数量</p>3
           </div>
           <div class="stats" slot="footer">
             <i class="ti-reload"></i>Updated now
@@ -20,7 +20,7 @@
             <i class="ti-user"></i>
           </div>
           <div class="numbers" slot="content">
-            <p>员工数量</p>375
+            <p>员工数量</p>45
           </div>
           <div class="stats" slot="footer">
             <i class="ti-reload"></i>Updated now
@@ -28,7 +28,7 @@
         </stats-card>
       </el-col>
     </el-row>
-
+  <!--
   <div id="customizedCalendar">
     <el-calendar
         :first-day-of-week=7
@@ -58,7 +58,7 @@
       </el-button>
     </div>
   </div>
-  <!--
+-->
     <el-row>
       <el-col :offset="2">
     <div class="col-10">
@@ -69,7 +69,6 @@
     </div>
       </el-col>
     </el-row>
-    -->
   </div>
 </template>
 
@@ -99,10 +98,10 @@ export default {
           labelNextDecade: '下一个十年',
           labelToday: '今天',
           labelSelected: '选定日期',
-          labelNoDateSelected: '未选择日期',
+          labelNoDateSelected: ' ',
           labelCalendar: '日历',
           labelNav: '日历导航',
-          labelHelp: '使用光标键浏览日期'
+          labelHelp: ' '
         }
       }
     }
