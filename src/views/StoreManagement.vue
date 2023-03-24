@@ -17,7 +17,7 @@
                   :value="item">
                 </el-option>
               </el-select>
-              <p-button style="margin-left: 5px;margin-bottom: 0.7%;" type="default">查询</p-button>
+              <el-button type="primary" style="margin-left: 4px; margin-bottom: auto;">查询</el-button>
             </div>
         </div>
         <div class="card-body table-responsive table-full-width">
