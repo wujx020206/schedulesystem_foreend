@@ -9,7 +9,7 @@ module.exports = {
     // 接口名前面要有api
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8080', // 后端接口地址，和后端保持一致
+        target: 'http://localhost:8081', // 后端接口地址
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/",
