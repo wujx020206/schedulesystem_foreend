@@ -64,6 +64,17 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <el-dialog title="修改偏好" :visible.sync="updateDialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="偏好值" prop="value" style="width: 45%;">
+            <el-input v-model="ruleForm.value"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitUpdateForm">立即修改</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -91,6 +102,7 @@ export default {
       };
       return {
         dialogFormVisible: false,
+        updateDialogFormVisible: false,
         input: '',
         options: [{
           value: '选项1',
@@ -153,7 +165,7 @@ export default {
     },
     methods: {
       handleEdit(row) {
-        console.log(`You want to edit row with id: ${row.id}`)
+        this.updateDialogFormVisible=true
       },
       handleAdd() {
         this.dialogFormVisible=true
@@ -163,11 +175,11 @@ export default {
       },
       tableRowClassName ({row, rowIndex}) {
         if (rowIndex%8 === 0) {
-          return 'table-success'
-        } else if (rowIndex%8 === 2) {
           return 'table-info'
-        } else if (rowIndex%8 === 4) {
+        } else if (rowIndex%8 === 2) {
           return 'table-danger'
+        } else if (rowIndex%8 === 4) {
+          return 'table-success'
         } else if (rowIndex%8 === 6) {
           return 'table-warning'
         }

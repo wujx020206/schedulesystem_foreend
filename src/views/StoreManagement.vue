@@ -7,28 +7,27 @@
             <div class="col-sm-6">
               <el-select
                 class="select-default"
-                v-model="pagination.perPage"
-                placeholder="Per page">
+                v-model="storeId"
+                placeholder="请选择要查询的门店">
                 <el-option
                   class="select-default"
-                  v-for="item in pagination.perPageOptions"
+                  v-for="item in tableData.id"
                   :key="item"
                   :label="item"
                   :value="item">
                 </el-option>
               </el-select>
-              <p-button style="margin-left: 5px;margin-bottom: 0.7%;" type="default">查询</p-button>
+              <el-button type="primary" style="margin-left: 4px; margin-bottom: auto;">查询</el-button>
             </div>
         </div>
         <div class="card-body table-responsive table-full-width">
           <el-table :row-class-name="tableRowClassName"
                     :data="tableData">
-            <el-table-column label="门店编号" property="id" width="100px"></el-table-column>
-            <el-table-column label="门店名称" property="name"></el-table-column>
-            <el-table-column label="所在城市" property="country"></el-table-column>
-            <el-table-column label="所在地区" property="city"></el-table-column>
+            <el-table-column label="门店编号" prop="id" width="100px"></el-table-column>
+            <el-table-column label="门店名称" prop="name"></el-table-column>
+            <el-table-column label="门店地址" prop="address"></el-table-column>
             <el-table-column label="操作" property="操作">
-              <template slot-scope="scope">
+              <template slot-scope="{row}">
                 <p-button type="info" icon @click.native="handleEdit(row)">
                   <i class="ti ti-pencil-alt"></i>
                 </p-button>
@@ -72,6 +71,29 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <el-dialog title="修改门店" :visible.sync="updateDialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="门店名称" prop="name" style="width: 45%;">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="所在城市" prop="city">
+            <el-select v-model="ruleForm.city" placeholder="请选择所在城市">
+              <el-option label="Nige" value="shanghai"></el-option>
+              <el-option label="Curaçao" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所在区域" prop="region">
+            <el-select v-model="ruleForm.region" placeholder="请选择所在区域">
+              <el-option label="Nige" value="city1"></el-option>
+              <el-option label="Curaçao" value="city2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitUpdateForm">立即修改</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -79,6 +101,8 @@
 <script>
 import { PaperTable } from "@/components";
 import { FormGroupInput as FGInput } from "@/components";
+import storeApi from '@/api/store'
+
 export default {
   components: {
     PaperTable,
@@ -99,50 +123,10 @@ export default {
       };
       return {
         dialogFormVisible: false,
-        title: "门店管理",
-        tableColumns: ["Id", "Name", "Salary", "Country", "City"],
-        tableData: [
-          {
-            id: 1,
-            name: "Dakota Rice",
-            salary: "$36.738",
-            country: "Niger",
-            city: "Oud-Turnhout"
-          },
-          {
-            id: 2,
-            name: "Minerva Hooper",
-            salary: "$23,789",
-            country: "Curaçao",
-            city: "Sinaai-Waas"
-          },
-          {
-            id: 3,
-            name: "Sage Rodriguez",
-            salary: "$56,142",
-            country: "Netherlands",
-            city: "Baileux"
-          },
-          {
-            id: 4,
-            name: "Philip Chaney",
-            salary: "$38,735",
-            country: "Korea, South",
-            city: "Overland Park"
-          },
-          {
-            id: 5,
-            name: "Doris Greene",
-            salary: "$63,542",
-            country: "Malawi",
-            city: "Feldkirchen in Kärnten"
-          }
-        ],
-        pagination: {
-          perPage: 5,
-          currentPage: 1,
-          perPageOptions: [5, 10, 25, 50],
-        },
+        updateDialogFormVisible: false,
+        title: '门店管理',
+        tableData: [],
+        storeId:'',
         ruleForm: {
           id: '',
           name: '',
@@ -167,8 +151,17 @@ export default {
       }
     },
     methods: {
+      //获取后端数据
+      fetchdata(){
+        storeApi.get().then(re => {
+          this.tableData=re.data.list;
+        },
+        re=>{
+          console.log("门店管理数据请求失败");
+        })
+      },
       handleEdit(row) {
-        console.log(`You want to edit row with id: ${row.id}`)
+        this.updateDialogFormVisible=true
       },
       handleAdd() {
         this.dialogFormVisible=true
@@ -199,10 +192,18 @@ export default {
           }
         });
       },
+      submitUpdateForm() {
+        storeApi.edit(row.id).then(re => {
+        this.$router.push('/home')
+        })
+      },
       resetForm() {
         this.$refs.ruleForm.resetFields();
       }
-    }
+    },
+  mounted() {
+    this.fetchdata()
+  }
 };
 </script>
 

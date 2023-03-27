@@ -72,6 +72,30 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <el-dialog title="修改员工信息" :visible.sync="updateDialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="员工职位" prop="position" style="width: 45%;">
+            <el-input v-model="ruleForm.position"></el-input>
+          </el-form-item>
+          <el-form-item label="联系电话" prop="phonenumber" style="width: 45%;">
+            <el-input v-model="ruleForm.phonenumber"></el-input>
+          </el-form-item>
+          <el-form-item label="电子邮箱" prop="email" style="width: 45%;">
+            <el-input v-model="ruleForm.email"></el-input>
+          </el-form-item>
+          <el-form-item label="门店名称" prop="storename">
+            <el-select v-model="ruleForm.storename" placeholder="请选择所在门店">
+              <el-option label="门店1" value="store1"></el-option>
+              <el-option label="门店2" value="store2"></el-option>
+              <el-option label="门店3" value="store3"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitUpdateForm">立即修改</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -87,6 +111,7 @@ export default {
     data() {
       return {
         dialogFormVisible: false,
+        updateDialogFormVisible: false,
         value1: [new Date(2023, 2, 13, 8, 0), new Date(2023, 2, 19, 8, 0)],
         value2: '',
         title: "员工管理",
@@ -173,7 +198,7 @@ export default {
 
   methods: {
     handleEdit(row) {
-        console.log(`You want to edit row with id: ${row.id}`)
+        this.updateDialogFormVisible=true
       },
       handleAdd() {
         this.dialogFormVisible=true

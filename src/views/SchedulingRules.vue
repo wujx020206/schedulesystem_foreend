@@ -13,7 +13,7 @@
                     :value="item.storevalue">
                   </el-option>
                 </el-select>
-                <el-select v-model="value" placeholder="请选择" style="margin-left: 4px;">
+                <el-select v-model="value2" placeholder="请选择" style="margin-left: 4px;">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -22,7 +22,7 @@
                   </el-option>
                 </el-select>
                 <el-button type="success" style="margin-left: 4px; margin-bottom: auto;">查询</el-button>
-                
+
               </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
               <i class="ti-plus"/>
               新增规则
             </p-button>
-            </div>          
+            </div>
           </div>
         </div>
         <el-dialog title="新增规则" :visible.sync="dialogFormVisible">
@@ -71,17 +71,45 @@
           <el-form-item label="规则内容" prop="value" style="width: 45%;">
             <el-input v-model="ruleForm.value"></el-input>
           </el-form-item>
-          
+
           <el-form-item>
             <el-button type="primary" @click="submitForm">立即创建</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
-      </el-dialog>  
+      </el-dialog>
+      <el-dialog title="修改规则" :visible.sync="updateDialogFormVisible">
+        <!-- <el-descriptions title="">
+          <el-descriptions-item label="门店">this.$refs.id.value</el-descriptions-item>
+          <el-descriptions-item label="规则大类">18100000000</el-descriptions-item>
+          <el-descriptions-item label="规则小类">苏州市</el-descriptions-item>
+        </el-descriptions> -->
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="规则内容" prop="value" style="width: 45%;">
+            <el-input v-model="ruleForm.value"></el-input>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" @click="submitUpdateForm">立即修改</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+      <el-dialog title="删除规则" :visible.sync="deleteDialogFormVisible">
+        <el-descriptions title="">
+          <el-descriptions-item label="提示信息">是否确定删除该排班规则？</el-descriptions-item>
+        </el-descriptions>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item>
+            <el-button @click="submitDeleteForm">确定</el-button>
+            <el-button type="primary" @click="closeDeleteForm">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
       </div>
     </div>
   </template>
-  
+
   <script>
   import { PaperTable } from "@/components";
   import { FormGroupInput as FGInput } from "@/components";
@@ -93,6 +121,8 @@
       data() {
         return {
           dialogFormVisible: false,
+          updateDialogFormVisible: false,
+          deleteDialogFormVisible: false,
           storeoptions: [{
             storevalue: '选项1',
             storelabel: '门店1'
@@ -162,10 +192,10 @@
       },
       methods: {
         handleEdit(row) {
-          console.log(`You want to edit row with id: ${row.id}`)
+          this.updateDialogFormVisible=true
         },
         handleDelete(row) {
-          console.log(`You want to delete row with id: ${row.id}`)
+          this.deleteDialogFormVisible=true
         },
         handleAdd() {
         this.dialogFormVisible=true
@@ -184,13 +214,19 @@
           }
         });
         },
+        submitUpdateForm() {
+          
+        },
+        closeDeleteForm() {
+          this.deleteDialogFormVisible=false
+        },
         resetForm() {
           this.$refs.ruleForm.resetFields();
         }
       }
   };
   </script>
-  
+
   <style>
     .el-select-width{
       margin-left: 0px;
@@ -201,7 +237,7 @@
       flex-direction: row;
       align-items: baseline;
     }
-    .Box .el-button--success{ 
+    .Box .el-button--success{
     background: #68B3C8;
     border-color: #68B3C8;
     }
