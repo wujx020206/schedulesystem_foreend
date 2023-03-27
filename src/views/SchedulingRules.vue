@@ -78,6 +78,34 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <el-dialog title="修改规则" :visible.sync="updateDialogFormVisible">
+        <!-- <el-descriptions title="">
+          <el-descriptions-item label="门店">this.$refs.id.value</el-descriptions-item>
+          <el-descriptions-item label="规则大类">18100000000</el-descriptions-item>
+          <el-descriptions-item label="规则小类">苏州市</el-descriptions-item>
+        </el-descriptions> -->
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="规则内容" prop="value" style="width: 45%;">
+            <el-input v-model="ruleForm.value"></el-input>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" @click="submitUpdateForm">立即修改</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+      <el-dialog title="删除规则" :visible.sync="deleteDialogFormVisible">
+        <el-descriptions title="">
+          <el-descriptions-item label="提示信息">是否确定删除该排班规则？</el-descriptions-item>
+        </el-descriptions>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item>
+            <el-button @click="submitDeleteForm">确定</el-button>
+            <el-button type="primary" @click="closeDeleteForm">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
       </div>
     </div>
   </template>
@@ -93,6 +121,8 @@
       data() {
         return {
           dialogFormVisible: false,
+          updateDialogFormVisible: false,
+          deleteDialogFormVisible: false,
           storeoptions: [{
             storevalue: '选项1',
             storelabel: '门店1'
@@ -162,10 +192,10 @@
       },
       methods: {
         handleEdit(row) {
-          console.log(`You want to edit row with id: ${row.id}`)
+          this.updateDialogFormVisible=true
         },
         handleDelete(row) {
-          console.log(`You want to delete row with id: ${row.id}`)
+          this.deleteDialogFormVisible=true
         },
         handleAdd() {
         this.dialogFormVisible=true
@@ -183,6 +213,12 @@
             return false;
           }
         });
+        },
+        submitUpdateForm() {
+          
+        },
+        closeDeleteForm() {
+          this.deleteDialogFormVisible=false
         },
         resetForm() {
           this.$refs.ruleForm.resetFields();

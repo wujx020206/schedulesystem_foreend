@@ -71,6 +71,29 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <el-dialog title="修改门店" :visible.sync="updateDialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="门店名称" prop="name" style="width: 45%;">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="所在城市" prop="city">
+            <el-select v-model="ruleForm.city" placeholder="请选择所在城市">
+              <el-option label="Nige" value="shanghai"></el-option>
+              <el-option label="Curaçao" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所在区域" prop="region">
+            <el-select v-model="ruleForm.region" placeholder="请选择所在区域">
+              <el-option label="Nige" value="city1"></el-option>
+              <el-option label="Curaçao" value="city2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitUpdateForm">立即修改</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -100,6 +123,7 @@ export default {
       };
       return {
         dialogFormVisible: false,
+        updateDialogFormVisible: false,
         title: '门店管理',
         tableData: [],
         storeId:'',
@@ -130,16 +154,14 @@ export default {
       //获取后端数据
       fetchdata(){
         storeApi.get().then(re => {
-          this.tableData=re.data;
+          this.tableData=re.data.list;
         },
         re=>{
           console.log("门店管理数据请求失败");
         })
       },
       handleEdit(row) {
-        storeApi.edit(row.id).then(re => {
-          this.$router.push('/home')
-        })
+        this.updateDialogFormVisible=true
       },
       handleAdd() {
         this.dialogFormVisible=true
@@ -169,6 +191,11 @@ export default {
             return false;
           }
         });
+      },
+      submitUpdateForm() {
+        storeApi.edit(row.id).then(re => {
+        this.$router.push('/home')
+        })
       },
       resetForm() {
         this.$refs.ruleForm.resetFields();
