@@ -94,6 +94,17 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <el-dialog title="删除商店" :visible.sync="deleteDialogFormVisible">
+        <el-descriptions title="">
+          <el-descriptions-item label="提示信息">是否确定删除该商店？</el-descriptions-item>
+        </el-descriptions>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item>
+            <el-button style="margin-left: 70%;" @click="submitDeleteForm">确定</el-button>
+            <el-button type="primary" @click="closeDeleteForm">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -208,4 +219,7 @@ export default {
 </script>
 
 <style>
+.el-descriptions__body{
+    margin-left: 10%;
+  }
 </style>

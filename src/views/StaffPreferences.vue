@@ -75,6 +75,17 @@
           </el-form-item>
         </el-form>
       </el-dialog>
+      <el-dialog title="删除偏好" :visible.sync="deleteDialogFormVisible">
+        <el-descriptions title="">
+          <el-descriptions-item label="提示信息">是否确定删除该偏好？</el-descriptions-item>
+        </el-descriptions>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item>
+            <el-button style="margin-left: 70%;" @click="submitDeleteForm">确定</el-button>
+            <el-button type="primary" @click="closeDeleteForm">取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -103,6 +114,7 @@ export default {
       return {
         dialogFormVisible: false,
         updateDialogFormVisible: false,
+        deleteDialogFormVisible: false,
         input: '',
         options: [{
           value: '选项1',
@@ -167,11 +179,11 @@ export default {
       handleEdit(row) {
         this.updateDialogFormVisible=true
       },
+      handleDelete(row) {
+        this.deleteDialogFormVisible=true
+      },
       handleAdd() {
         this.dialogFormVisible=true
-      },
-      handleDelete(row) {
-        console.log(`You want to delete row with id: ${row.id}`)
       },
       tableRowClassName ({row, rowIndex}) {
         if (rowIndex%8 === 0) {
@@ -198,7 +210,13 @@ export default {
       },
       resetForm() {
         this.$refs.ruleForm.resetFields();
-      }
+      },
+      submitUpdateForm() {
+          
+      },
+      closeDeleteForm() {
+        this.deleteDialogFormVisible=false
+      },
     }
 };
 </script>
@@ -215,4 +233,7 @@ export default {
     background: #68B3C8;
     border-color: #68B3C8;
     }
+  .el-descriptions__body{
+    margin-left: 10%;
+  }
 </style>
