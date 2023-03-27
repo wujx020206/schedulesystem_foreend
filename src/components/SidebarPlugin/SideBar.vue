@@ -8,7 +8,7 @@
       <div class="logo">
         <a href="/home" class="simple-text">
           <div class="logo-img">
-            <img src="@/assets/img/vue-logo.png" alt="" />
+            <img src="@/assets/img/company-logo.png" alt="" />
           </div>
           {{ title }}
         </a>
