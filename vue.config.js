@@ -13,8 +13,15 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           "^/store_url": ''
-        },
-      }
+        }
+      },
+      '/staff_url': {
+        target: 'http://localhost:8082', // 后端接口地址
+        changeOrigin: true,
+        pathRewrite: {
+          "^/staff_url": ''
+        }
+      },
     }
   },
 };
