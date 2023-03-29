@@ -19,7 +19,7 @@ const request = function (loadtip, query) {
         loading.close()}
       // 登陆失败，请求异常信息提示处理
       if (res.data.code === 401) {
-        vue.prototype.$$router.push({ path: '/login' })
+        vue.prototype.$router.push({ path: '/login' })
         return Promise.reject(res.data)
       }
       else if (res.data.code === 500) {
@@ -27,7 +27,7 @@ const request = function (loadtip, query) {
       } else if (res.data.code === 501) {
         return Promise.reject(res.data)
       } else if (res.data.code === 502) {
-        vue.prototype.$$router.push({ path: '/login' })
+        vue.prototype.$router.push({ path: '/login' })
         return Promise.reject(res.data)}
       //登陆成功
       else {

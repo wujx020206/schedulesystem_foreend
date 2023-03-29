@@ -11,12 +11,15 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './assets/sass/app.scss'
 import axios from "axios";
+import {MessageBox,Message} from "element-ui";
 
 Vue.use(ElementUI);
 Vue.use(PaperDashboard);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.prototype.$axios = axios
+Vue.prototype.$confirm=MessageBox.confirm
+Vue.prototype.$message=Message
 
 new Vue({
   router,

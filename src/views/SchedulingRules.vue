@@ -101,7 +101,7 @@
         </el-descriptions>
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item>
-            <el-button @click="submitDeleteForm">确定</el-button>
+            <el-button style="margin-left: 70%;" @click="submitDeleteForm">确定</el-button>
             <el-button type="primary" @click="closeDeleteForm">取消</el-button>
           </el-form-item>
         </el-form>
@@ -245,5 +245,7 @@
       background-color: #28a745;
       border-color: #28a745;
     }
-
+    .el-descriptions__body{
+    margin-left: 10%;
+    }
   </style>
