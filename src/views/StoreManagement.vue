@@ -78,19 +78,6 @@
           </el-form-item>
         </el-form>
       </el-dialog>
-      <!--
-      <el-dialog title="删除商店" :visible.sync="deleteDialogFormVisible">
-        <el-descriptions title="">
-          <el-descriptions-item label="提示信息">是否确定删除该商店？</el-descriptions-item>
-        </el-descriptions>
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item>
-            <el-button style="margin-left: 70%;" @click="submitDeleteForm">确定</el-button>
-            <el-button type="primary" @click="closeDeleteForm">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-      -->
     </div>
   </div>
 </template>
@@ -99,6 +86,7 @@
 import { PaperTable } from "@/components";
 import { FormGroupInput as FGInput } from "@/components";
 import storeApi from '@/api/store'
+import Vue from "vue";
 
 export default {
   components: {
@@ -147,7 +135,6 @@ export default {
           ]
         },
         row:'',
-        id:'',
       }
     },
   methods: {
@@ -174,7 +161,6 @@ export default {
       handleEdit(row) {
         this.updateDialogFormVisible=true
         this.row=row
-        this.id=row.id
       },
       handleAdd() {
         this.dialogFormVisible=true
@@ -191,10 +177,12 @@ export default {
         }else{
         storeApi.del(row.id).then(re=>{
           if(re.errmsg==='成功'){
-            this.tableData.splice(row,1)
+            const rowIndex = this.tableData.indexOf(row)
+            this.tableData.splice(rowIndex,1)
             this.$message.success('删除该门店成功')
-            const selectedValue=this.tableData[row].name
-            this.options=this.options.filter(item=>item.value!==selectedValue)
+            const selectedValue=row.name
+            console.log(selectedValue)
+            this.options=this.options.filter(item=>item!==selectedValue)
             if(this.options===selectedValue){
               this.options=''
             }
@@ -246,16 +234,14 @@ export default {
               name:this.ruleForm2.name2,
               address:this.ruleForm2.address2
             }
-            storeApi.edit(this.id,query).then(re=>{
-              if(re.errmsg==='创建成功'){
+            storeApi.edit(this.row.id,query).then(re=>{
+              if(re.errmsg==='成功'){
                 this.$message.success('修改门店成功')
-                this.dialogFormVisible=false
-                const oldValue=this.tableData[this.row].name
-                this.options=this.options.filter(item=>item.value!==oldValue)
-                this.options.push(this.ruleForm2.name2)
-                this.updateTable()
-                this.$refs.ruleForm2.resetFields();
                 this.updateDialogFormVisible=false
+                this.updateTable()
+                const rowIndex = this.tableData.indexOf(this.row)
+                Vue.set(this.options,rowIndex,this.ruleForm2.name2)
+                this.$refs.ruleForm2.resetFields();
               }
               else {
                 this.$message.error('修改门店失败！')
