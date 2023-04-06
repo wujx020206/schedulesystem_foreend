@@ -4,86 +4,42 @@
         <div class="card">
           <div class="card-header">
             <div class="col-sm-6">
-              <div class="Box">
-                <el-select v-model="value" placeholder="请选择">
+                <el-select v-model="store" placeholder="请选择" clearable>
                   <el-option
-                    v-for="item in storeoptions"
-                    :key="item.storevalue"
-                    :label="item.storelabel"
-                    :value="item.storevalue">
+                    v-for="item in storeOptions"
+                    :key="item"
+                    :label="item"
+                    :value="item">
                   </el-option>
                 </el-select>
-                <el-select v-model="value2" placeholder="请选择" style="margin-left: 4px;">
+                <el-select v-model="type" placeholder="请选择" style="margin-left: 4px;" clearable>
                   <el-option
                     v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item"
+                    :label="item"
+                    :value="item">
                   </el-option>
                 </el-select>
-                <el-button type="success" style="margin-left: 4px; margin-bottom: auto;">查询</el-button>
-
-              </div>
           </div>
         </div>
           <div class="card-body table-responsive table-full-width">
             <el-table :row-class-name="tableRowClassName"
-                      :data="tableData">
-              <el-table-column label="门店" property="id"></el-table-column>
-              <el-table-column label="大类" property="type1"></el-table-column>
-              <el-table-column label="小类" property="type2"></el-table-column>
+                      :data="filteredData">
+              <el-table-column label="门店" property="shopName"></el-table-column>
+              <el-table-column label="大类" property="firstType"></el-table-column>
+              <el-table-column label="小类" property="secondType"></el-table-column>
               <el-table-column label="规则内容" property="value"></el-table-column>
               <el-table-column label="操作" property="操作">
-                <template slot-scope="scope">
+                <template slot-scope="{row}">
                   <p-button type="info" icon @click.native="handleEdit(row)">
                     <i class="ti ti-pencil-alt"></i>
-                  </p-button>
-                  <p-button style="margin-left: 5px;" type="danger" icon @click.native="handleDelete(row)">
-                    <i class="ti ti-close"></i>
                   </p-button>
                 </template>
               </el-table-column>
             </el-table>
-            <div style="margin-top: 10px">
-            <p-button block type="success" @click.native="handleAdd">
-              <i class="ti-plus"/>
-              新增规则
-            </p-button>
-            </div>
           </div>
         </div>
-        <el-dialog title="新增规则" :visible.sync="dialogFormVisible">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="门店名称" prop="id">
-            <el-select v-model="ruleForm.id" placeholder="请选择所在门店">
-              <el-option label="门店1" value="store1"></el-option>
-              <el-option label="门店2" value="store2"></el-option>
-              <el-option label="门店3" value="store"></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="规则大类" prop="type1" style="width: 45%;">
-            <el-input v-model="ruleForm.type1"></el-input>
-          </el-form-item>
-          <el-form-item label="规则小类" prop="type2" style="width: 45%;">
-            <el-input v-model="ruleForm.type2"></el-input>
-          </el-form-item>
-          <el-form-item label="规则内容" prop="value" style="width: 45%;">
-            <el-input v-model="ruleForm.value"></el-input>
-          </el-form-item>
-
-          <el-form-item>
-            <el-button type="primary" @click="submitForm">立即创建</el-button>
-            <el-button @click="resetForm">重置</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
       <el-dialog title="修改规则" :visible.sync="updateDialogFormVisible">
-        <!-- <el-descriptions title="">
-          <el-descriptions-item label="门店">this.$refs.id.value</el-descriptions-item>
-          <el-descriptions-item label="规则大类">18100000000</el-descriptions-item>
-          <el-descriptions-item label="规则小类">苏州市</el-descriptions-item>
-        </el-descriptions> -->
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="规则内容" prop="value" style="width: 45%;">
             <el-input v-model="ruleForm.value"></el-input>
@@ -95,17 +51,6 @@
           </el-form-item>
         </el-form>
       </el-dialog>
-      <el-dialog title="删除规则" :visible.sync="deleteDialogFormVisible">
-        <el-descriptions title="">
-          <el-descriptions-item label="提示信息">是否确定删除该排班规则？</el-descriptions-item>
-        </el-descriptions>
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item>
-            <el-button style="margin-left: 70%;" @click="submitDeleteForm">确定</el-button>
-            <el-button type="primary" @click="closeDeleteForm">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
       </div>
     </div>
   </template>
@@ -113,117 +58,122 @@
   <script>
   import { PaperTable } from "@/components";
   import { FormGroupInput as FGInput } from "@/components";
+  import ruleApi from '@/api/rule'
+  import storeApi from '@/api/store'
+
   export default {
     components: {
       PaperTable,
       FGInput
     },
-      data() {
-        return {
-          dialogFormVisible: false,
-          updateDialogFormVisible: false,
-          deleteDialogFormVisible: false,
-          storeoptions: [{
-            storevalue: '选项1',
-            storelabel: '门店1'
-          }, {
-            storevalue: '选项2',
-            storelabel: '门店2'
-          }, {
-            storevalue: '选项3',
-            storelabel: '门店3'
-          }],
-          options: [{
-            value: '选项1',
-            label: '工作日偏好'
-          }, {
-            value: '选项2',
-            label: '工作时间偏好'
-          }, {
-            value: '选项3',
-            label: '班次时长偏好'
-          }],
+    data() {
+      return {
+        updateDialogFormVisible: false,
+        storeOptions: [],
+        options: [],
+        store: '',
+        type: '',
+        title: "门店管理",
+        tableData: [],
+        ruleForm: {
+          shopName: '',
+          firstType: '',
+          secondType:'',
           value: '',
-          value1: [new Date(2023, 2, 13, 8, 0), new Date(2023, 2, 19, 8, 0)],
-          value2: '',
-          title: "门店管理",
-          tableColumns: ["Id", "Name", "Type", "Value"],
-          tableData: [
-            {
-              id: "门店1",
-              type1: "固定规则",
-              type2: "工作日开店规则",
-              value: "8点"
-            },
-            {
-              id: "门店1",
-              type1: "固定规则",
-              type2: "工作日关店规则",
-              value: "21点"
-            },
-            {
-              id: "门店2",
-              type1: "自定义规则",
-              type2: "收尾工作人数",
-              value: "2点"
-            }
-          ],
-          ruleForm: {
-          id: '',
-          type1: '',
-          type2:'',
-          value: ''
         },
         rules: {
-          id: [
-            { required:true, message:'请选择门店', trigger: 'change'},
-          ],
-          type1:[
-            {required:true,message:'请输入规则大类',trigger:'blur'}
-          ],
-          type2:[
-            {required:true,message:'请输入规则小类',trigger:'blur'}
-          ],
           value:[
-            {required:true,message:'请输入规则值',trigger:'blur'}
+            {required:true,message:'请输入规则内容',trigger:'blur'}
           ],
         },
-        }
-      },
-      methods: {
-        handleEdit(row) {
-          this.updateDialogFormVisible=true
-        },
-        handleDelete(row) {
-          this.deleteDialogFormVisible=true
-        },
-        handleAdd() {
-        this.dialogFormVisible=true
-        },
-        tableRowClassName ({row, rowIndex}) {
-          return ''
-        },
-        submitForm() {
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            alert('submit!');
-            this.dialogFormVisible=false
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-        },
-        submitUpdateForm() {
-          
-        },
-        closeDeleteForm() {
-          this.deleteDialogFormVisible=false
-        },
-        resetForm() {
-          this.$refs.ruleForm.resetFields();
-        }
+        storeId:'',
+        row:'',
       }
+    },
+    created() {
+      ruleApi.get().then(re=>{
+          this.tableData=re.data.list
+          const option1=[],option2=[]
+          this.tableData.forEach(element=>{
+            option1.push(element.shopName)
+            option2.push(element.secondType)
+          })
+          const set1=new Set(option1)
+          const set2=new Set(option2)
+          this.storeOptions=Array.from(set1)
+          this.options=Array.from(set2)
+        },
+        re=>{
+          console.log("排班规则管理数据请求失败")
+        })
+    },
+    methods: {
+      updateTable(){
+        ruleApi.get().then(re => {
+            this.tableData=re.data.list
+          },
+          re=>{
+            console.log("门店管理数据请求失败");
+          })
+      },
+      handleEdit(row) {
+        this.updateDialogFormVisible=true
+        this.row=row
+      },
+      handleAdd() {
+      this.dialogFormVisible=true
+      },
+      tableRowClassName ({row, rowIndex}) {
+        return ''
+      },
+      submitUpdateForm() {
+        this.$refs.ruleForm.validate((valid)=>{
+          if(valid){
+            const query={
+              value:this.ruleForm.value
+            }
+            const type=this.row.firstType+'_'+this.row.secondType
+            storeApi.specific(this.row.shopName).then(re=>{
+              ruleApi.edit(re.data.id,type,query).then(res=>{
+                if(res.errmsg==='成功'){
+                  this.$message.success('修改排班规则成功')
+                  this.updateDialogFormVisible=false
+                  this.updateTable()
+                  this.$refs.ruleForm.resetFields();
+                }else{
+                  this.$message.error('修改排班规则失败！')
+                }
+              })
+            },
+            re=>{
+              console.log("门店管理数据请求失败")
+            })
+          }
+        })
+      },
+      closeDeleteForm() {
+        this.deleteDialogFormVisible=false
+      },
+      resetForm() {
+        this.$refs.ruleForm.resetFields();
+      }
+    },
+    computed:{
+      filteredData(){
+        if(this.store&&!this.type){
+          return this.tableData.filter(item=>item.shopName===this.store)
+        }
+        else if(this.type&&!this.store){
+          return this.tableData.filter(item=>item.secondType===this.type)
+        }
+        else if(this.store&&this.type){
+          return this.tableData.filter(item=>
+            item.shopName===this.store && item.secondType===this.type
+          )
+        }
+        return this.tableData
+      }
+    }
   };
   </script>
 

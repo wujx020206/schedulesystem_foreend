@@ -22,6 +22,27 @@ module.exports = {
           "^/staff_url": ''
         }
       },
+      '/rule_url': {
+        target: 'http://localhost:8083', // 后端接口地址
+        changeOrigin: true,
+        pathRewrite: {
+          "^/rule_url": ''
+        }
+      },
+      '/forecast_url': {
+        target: 'http://localhost:8084', // 后端接口地址
+        changeOrigin: true,
+        pathRewrite: {
+          "^/forecast_url": ''
+        }
+      },
+      '/preference_url':{
+        target: 'http://localhost:8082',
+        changeOrigin: true,
+        pathRewrite: {
+          "^/preference_url": ''
+        }
+      },
     }
   },
 };
