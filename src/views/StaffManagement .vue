@@ -5,29 +5,28 @@
         <div class="card-header">
           <div class="col-sm-6">
             <div class="zhujian">
-              <el-input v-model="input" placeholder="请输入内容" style="margin-right: 4px;"></el-input>
-              <el-select v-model="value" placeholder="请选择">
+              <el-input v-model="input" clearable placeholder="请输入员工姓名" style="margin-right: 4px;"></el-input>
+              <el-select v-model="select" placeholder="请选择" clearable>
                 <el-option
                   v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item"
+                  :label="item"
+                  :value="item">
                 </el-option>
               </el-select>
-              <el-button type="success" style="margin-left: 4px; margin-bottom: auto;">查询</el-button>
             </div>
           </div>
       </div>
         <div class="card-body table-responsive table-full-width">
           <el-table :row-class-name="tableRowClassName"
-                    :data="tableData">
-            <el-table-column label="员工" property="name"></el-table-column>
-            <el-table-column label="职位" property="position"> </el-table-column>   
-            <el-table-column label="联系电话" property="phonenumber"></el-table-column>
-            <el-table-column label="电子邮箱" property="email"></el-table-column>
-            <el-table-column label="所属门店" property="storename"></el-table-column>
+                    :data="filteredData">
+            <el-table-column label="员工" prop="name"></el-table-column>
+            <el-table-column label="职位" prop="position"> </el-table-column>
+            <el-table-column label="联系电话" prop="phone"></el-table-column>
+            <el-table-column label="电子邮箱" prop="email"></el-table-column>
+            <el-table-column label="所属门店" prop="shopName"></el-table-column>
             <el-table-column label="操作" property="操作">
-              <template slot-scope="scope">
+              <template slot-scope="{row}">
                 <p-button type="info" icon @click.native="handleEdit(row)">
                   <i class="ti ti-pencil-alt"></i>
                 </p-button>
@@ -53,17 +52,15 @@
           <el-form-item label="员工职位" prop="position" style="width: 45%;">
             <el-input v-model="ruleForm.position"></el-input>
           </el-form-item>
-          <el-form-item label="联系电话" prop="phonenumber" style="width: 45%;">
-            <el-input v-model="ruleForm.phonenumber"></el-input>
+          <el-form-item label="联系电话" prop="phone" style="width: 45%;">
+            <el-input v-model="ruleForm.phone"></el-input>
           </el-form-item>
           <el-form-item label="电子邮箱" prop="email" style="width: 45%;">
             <el-input v-model="ruleForm.email"></el-input>
           </el-form-item>
-          <el-form-item label="门店名称" prop="storename">
-            <el-select v-model="ruleForm.storename" placeholder="请选择所在门店">
-              <el-option label="门店1" value="store1"></el-option>
-              <el-option label="门店2" value="store2"></el-option>
-              <el-option label="门店3" value="store3"></el-option>
+          <el-form-item label="门店名称" prop="shopName">
+            <el-select v-model="ruleForm.shopName" placeholder="请选择所在门店">
+              <el-option v-for="item in storeOptions" :label="item" :value="item"/>
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -72,38 +69,28 @@
           </el-form-item>
         </el-form>
       </el-dialog>
-      <el-dialog title="修改员工信息" :visible.sync="updateDialogFormVisible">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="员工职位" prop="position" style="width: 45%;">
-            <el-input v-model="ruleForm.position"></el-input>
+      <el-dialog title="修改员工" :visible.sync="updateDialogFormVisible">
+        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="员工姓名" prop="name2" style="width: 45%;">
+            <el-input v-model="ruleForm2.name2"></el-input>
           </el-form-item>
-          <el-form-item label="联系电话" prop="phonenumber" style="width: 45%;">
-            <el-input v-model="ruleForm.phonenumber"></el-input>
+          <el-form-item label="员工职位" prop="position2" style="width: 45%;">
+            <el-input v-model="ruleForm2.position2"></el-input>
           </el-form-item>
-          <el-form-item label="电子邮箱" prop="email" style="width: 45%;">
-            <el-input v-model="ruleForm.email"></el-input>
+          <el-form-item label="联系电话" prop="phone2" style="width: 45%;">
+            <el-input v-model="ruleForm2.phone2"></el-input>
           </el-form-item>
-          <el-form-item label="门店名称" prop="storename">
-            <el-select v-model="ruleForm.storename" placeholder="请选择所在门店">
-              <el-option label="门店1" value="store1"></el-option>
-              <el-option label="门店2" value="store2"></el-option>
-              <el-option label="门店3" value="store3"></el-option>
+          <el-form-item label="电子邮箱" prop="email2" style="width: 45%;">
+            <el-input v-model="ruleForm2.email2"></el-input>
+          </el-form-item>
+          <el-form-item label="门店名称" prop="shopName2">
+            <el-select v-model="ruleForm2.shopName2" placeholder="请选择所在门店">
+              <el-option v-for="item in storeOptions" :label="item" :value="item"/>
             </el-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitUpdateForm">立即修改</el-button>
-            <el-button @click="resetForm">重置</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
-      <el-dialog title="删除员工" :visible.sync="deleteDialogFormVisible">
-        <el-descriptions title="">
-          <el-descriptions-item style="background-color: black;" label="提示信息">是否确定删除该员工？</el-descriptions-item>
-        </el-descriptions>
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item>
-            <el-button style="margin-left: 70%;" @click="submitDeleteForm">确定</el-button>
-            <el-button type="primary" @click="closeDeleteForm">取消</el-button>
+            <el-button @click="resetForm2">重置</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -114,145 +101,235 @@
 <script>
 import { PaperTable } from "@/components";
 import { FormGroupInput as FGInput } from "@/components";
+import staffApi from "@/api/staff";
+import storeApi from '@/api/store'
+import Vue from "vue";
+
 export default {
   components: {
     PaperTable,
     FGInput
   },
-    data() {
-      return {
-        dialogFormVisible: false,
-        updateDialogFormVisible: false,
-        deleteDialogFormVisible: false,
-        value1: [new Date(2023, 2, 13, 8, 0), new Date(2023, 2, 19, 8, 0)],
-        value2: '',
-        title: "员工管理",
-        tableColumns: ["name", "position", "phonenumber", "storename", "email"],
-        tableData: [
-          {
-            name: "Lily",
-            position: "manager",
-            phonenumber: "123456",
-            storename: "La marine",
-            email:"sdadasfsdad@qq.com"
-          },
-          {
-            name: "Bob",
-            position: "asistant manager",
-            phonenumber: "123488",
-            storename: "La marine",
-            email:"414dad@qq.com"
-          },
-          {
-            name: "Lin",
-            position: "cashier",
-            phonenumber: "888888",
-            storename: "Noma",
-            email:"sdadgad@qq.com"
-          },
-          {
-            name: "W",
-            position: "cashier",
-            phonenumber: "8788888",
-            storename: "Noma",
-            email:"sd4567456d@qq.com"
-          },
-          {
-            name: "Xoe",
-            position: "guider",
-            phonenumber: "884326",
-            storename: "Noma",
-            email:"sdss4224dad@qq.com"
-          },
-          {
-            name: "BBi",
-            position: "guider",
-            phonenumber: "7468794",
-            storename: "X",
-            email:"sp64fsdad@qq.com"
-          },
-          {
-            name: "Sb",
-            position: "cashier",
-            phonenumber: "8465488",
-            storename: "Noma",
-            email:"sdadad@qq.com"
-          },
-
+  data() {
+    return {
+      dialogFormVisible: false,
+      updateDialogFormVisible: false,
+      title: "员工管理",
+      tableData: [],
+      ruleForm: {
+        name: '',
+        position: '',
+        phone:'',
+        shopName: '',
+        email: ''
+      },
+      rules: {
+        name:[
+          {required:true,message:'请输入员工姓名',trigger:'blur'}
         ],
-        ruleForm: {
-          name: '',
-          position: '',
-          phonenumber:'',
-          storename: '',
-          email: ''
+        position:[
+          {required:true,message:'请输入员工职位',trigger:'blur'}
+        ],
+        phone:[
+          {required:true,message:'请输入员工联系电话',trigger:'blur'}
+        ],
+        email:[
+          {required:true,message:'请输入员工电子邮件',trigger:'blur'}
+        ],
+        shopName: [
+          {required: true, message: '请选择所在店铺', trigger: 'change'}
+        ]
+      },
+      ruleForm2: {
+        name2: '',
+        position2: '',
+        phone2:'',
+        shopName2: '',
+        email2: ''
+      },
+      rules2: {
+        name2:[
+          {required:true,message:'请输入员工姓名',trigger:'blur'}
+        ],
+        position2:[
+          {required:true,message:'请输入员工职位',trigger:'blur'}
+        ],
+        phone2:[
+          {required:true,message:'请输入员工联系电话',trigger:'blur'}
+        ],
+        email2:[
+          {required:true,message:'请输入员工电子邮件',trigger:'blur'}
+        ],
+        shopName2: [
+          {required: true, message: '请选择所在店铺', trigger: 'change'}
+        ]
+      },
+      formLabelWidth: '120px',
+      options: [],
+      storeOptions: [],
+      input:'',
+      select:'',
+      storeId:'',
+      staffId:'',
+      row:'',
+      }
+  },
+  created() {
+    staffApi.get().then(re=>{
+        this.tableData=re.data.list
+        this.tableData.forEach(element=>{
+          this.options.push(element.shopName)
+        })
+      },
+      re=>{
+        console.log("员工管理数据请求失败");
+      })
+    storeApi.get().then(re=>{
+        re.data.list.forEach(element=>{
+          this.storeOptions.push(element.name)
+        })
+      },
+      re=>{
+        console.log("门店管理数据请求失败");
+      })
+  },
+  methods: {
+    updateTable(){
+      staffApi.get().then(re=>{
+          this.tableData=re.data.list
         },
-        rules: {
-          name:[
-            {required:true,message:'请输入员工名称',trigger:'blur'}
-          ],
-          position:[
-            {required:true,message:'请输入员工职位',trigger:'blur'}
-          ],
-          phonenumber:[
-            {required:true,message:'请输入员工电话号码',trigger:'blur'}
-          ],
-          email:[
-            {required:true,message:'请输入员工电子邮件',trigger:'blur'}
-          ],
-          storename: [
-            {required: true, message: '请选择所在店铺', trigger: 'change'}
-          ]
-        },
-        formLabelWidth: '120px',
+        re=>{
+          console.log("员工管理数据请求失败");
+        })
+    },
+    handleEdit(row) {
+      this.updateDialogFormVisible=true
+      this.row=row
+    },
+    async handleDelete(row) {
+      const confirmResult=await this.$confirm('是否确定删除该员工？','提示',{
+        confirmButtonText:'确定',
+        cancelButtonClass:'取消',
+        type:'warning'
+      }).catch(err=>err)
+
+      if(confirmResult==='cancel'){
+        this.$message.info('已经取消删除')
+      }else {
+        const re = await staffApi.getId(row.name)
+        this.staffId=re.data.list[0]
+        staffApi.del(this.staffId).then(re=>{
+          if(re.errmsg==='成功'){
+            const rowIndex = this.tableData.indexOf(row)
+            this.tableData.splice(rowIndex,1)
+            this.$message.success('删除该员工成功')
+          }else{
+            this.$message.error('删除员工失败！')
+          }
+        })
       }
     },
-
-  methods: {
-      handleEdit(row) {
-        this.updateDialogFormVisible=true
-      },
-      handleDelete(row) {
-        this.deleteDialogFormVisible=true
-      },
-      handleAdd() {
-        this.dialogFormVisible=true
-      },
-      tableRowClassName ({row, rowIndex}) {
-        if (rowIndex%8 === 0) {
-          return 'table-success'
-        } else if (rowIndex%8 === 2) {
-          return 'table-info'
-        } else if (rowIndex%8 === 4) {
-          return 'table-danger'
-        } else if (rowIndex%8 === 6) {
-          return 'table-warning'
-        }
-        return ''
-      },
-      submitForm() {
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            alert('submit!');
-            this.dialogFormVisible=false
-          } else {
-            console.log('error submit!!');
-            return false;
+    handleAdd() {
+      this.dialogFormVisible=true
+    },
+    tableRowClassName ({row, rowIndex}) {
+      if (rowIndex%8 === 0) {
+        return 'table-success'
+      } else if (rowIndex%8 === 2) {
+        return 'table-info'
+      } else if (rowIndex%8 === 4) {
+        return 'table-danger'
+      } else if (rowIndex%8 === 6) {
+        return 'table-warning'
+      }
+      return ''
+    },
+    submitForm() {
+      this.$refs.ruleForm.validate(async (valid) => {
+        if (valid) {
+          const re = await storeApi.specific(this.ruleForm.shopName)
+          this.storeId=re.data.id
+          const query = {
+            name: this.ruleForm.name,
+            position: this.ruleForm.position,
+            phone: this.ruleForm.phone,
+            email: this.ruleForm.email,
+            storeId: this.storeId
           }
-        });
-      },
-      resetForm() {
-        this.$refs.ruleForm.resetFields();
-      },
-      submitUpdateForm() {
-          
-      },
-      closeDeleteForm() {
-        this.deleteDialogFormVisible=false
-      },
-      
+          staffApi.add(query).then(re => {
+            if (re.errmsg === '创建成功') {
+              this.$message.success('新增员工成功')
+              this.dialogFormVisible = false
+              this.updateTable()
+              if (!this.options.includes(this.ruleForm.shopName))
+                this.options.push(this.ruleForm.shopName)
+              this.$refs.ruleForm.resetFields()
+            } else {
+              this.$message.error('新增员工失败！')
+            }
+          })
+        }
+      })
+    },
+    resetForm() {
+      this.$refs.ruleForm.resetFields();
+    },
+    resetForm2() {
+      this.$refs.ruleForm2.resetFields();
+    },
+    submitUpdateForm() {
+      this.$refs.ruleForm2.validate(async (valid) => {
+        if (valid) {
+          const re = await staffApi.getId(this.row.name)
+          this.staffId=re.data.list[0]
+          const re2 = await storeApi.specific(this.ruleForm2.shopName2)
+          this.storeId=re2.data.id
+          const query ={
+            name:this.ruleForm2.name2,
+            position:this.ruleForm2.position2,
+            phone:this.ruleForm2.phone2,
+            email:this.ruleForm2.email2,
+            storeId:this.storeId
+          }
+          staffApi.edit(this.staffId,query).then(re=>{
+            if(re.errmsg==='成功'){
+              this.$message.success('修改员工成功')
+              this.updateDialogFormVisible=false
+              this.updateTable()
+              const rowIndex = this.tableData.indexOf(this.row)
+              Vue.set(this.options,rowIndex,this.ruleForm2.shopName2)
+              this.$refs.ruleForm2.resetFields();
+            }
+            else {
+              this.$message.error('修改门店失败！')
+            }
+          })
+        }
+      })
+    },
+    closeDeleteForm() {
+      this.deleteDialogFormVisible=false
+    },
+  },
+  computed:{
+    filteredData(){
+      if(!this.input&&this.select){
+        return this.tableData.filter(item=>item.shopName===this.select)
+      }
+      else if(this.input&&!this.select){
+        return this.tableData.filter(item => {
+           return item.name.toLowerCase().includes(this.input.toLowerCase())
+        })
+      }
+      else if(this.input&&this.select){
+        const table=this.tableData.filter(item=>item.shopName===this.select)
+        return table.filter(item=>{
+          return item.name.toLowerCase().includes(this.input.toLowerCase())
+        })
+      }
+      return this.tableData
+    }
   }
-
 };
 </script>
 
@@ -264,7 +341,7 @@ export default {
     display: flex;
     justify-content: center;
   }
-  .zhujian .el-button--success{ 
+  .zhujian .el-button--success{
     background: #68B3C8;
     border-color: #68B3C8;
     }
