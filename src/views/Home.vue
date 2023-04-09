@@ -7,7 +7,7 @@
             <i class="ti-home"></i>
           </div>
           <div class="numbers" slot="content">
-            <p>门店数量</p>3
+            <p>门店数量</p>{{this.storeNum}}
           </div>
           <div class="stats" slot="footer">
             <i class="ti-reload"></i>Updated now
@@ -20,7 +20,7 @@
             <i class="ti-user"></i>
           </div>
           <div class="numbers" slot="content">
-            <p>员工数量</p>45
+            <p>员工数量</p>{{this.staffNum}}
           </div>
           <div class="stats" slot="footer">
             <i class="ti-reload"></i>Updated now
@@ -76,6 +76,8 @@
 import moment from 'moment'
 import PubSub from 'pubsub-js'
 import StatsCard from "@/components/Cards/StatsCard";
+import storeApi from '@/api/store'
+import staffApi from '@/api/staff'
 
 export default {
   components: {
@@ -103,8 +105,18 @@ export default {
           labelNav: '日历导航',
           labelHelp: ' '
         }
-      }
+      },
+      storeNum:'',
+      staffNum:'',
     }
+  },
+  async created() {
+    this.storeNum = await storeApi.get().then(re => {
+      return re.data.list.length
+    })
+    this.staffNum =await staffApi.get().then(re => {
+      return re.data.list.length
+    })
   },
   computed: {
     selectDate() {
@@ -124,7 +136,18 @@ export default {
     clickCalendar(data) {
       console.log(data)
       PubSub.publish("uploadWarningResultWarningTime", data.day);
+    },
+    async update() {
+      this.storeNum = await storeApi.get().then(re => {
+        return re.data.list.length
+      })
+      this.staffNum = await staffApi.get().then(re => {
+        return re.data.list.length
+      })
     }
+  },
+  mounted() {
+    this.update()
   }
 }
 </script>
