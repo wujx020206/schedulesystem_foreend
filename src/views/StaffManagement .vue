@@ -177,9 +177,12 @@ export default {
   created() {
     staffApi.get().then(re=>{
         this.tableData=re.data.list
+        const options1=[]
         this.tableData.forEach(element=>{
-          this.options.push(element.shopName)
+          options1.push(element.shopName)
         })
+        const set1=new Set(options1)
+        this.options=Array.from(set1)
       },
       re=>{
         console.log("员工管理数据请求失败");

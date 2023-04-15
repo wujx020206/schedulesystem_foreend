@@ -96,6 +96,7 @@ export default {
   created() {
     preferenceApi.get().then(re=>{
       this.tableData=re.data.list
+      const options1=[]
       this.tableData.forEach(item=>{
         switch (item.type){
           case 0:item.type='工作日偏好'
@@ -105,8 +106,10 @@ export default {
           case 2:item.type='班次时长偏好'
             break
         }
-        this.options.push(item.type)
+        options1.push(item.type)
       })
+      const set1=new Set(options1)
+      this.options=Array.from(set1)
     },
     re=>{
       console.log("员工偏好数据请求失败")

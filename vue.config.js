@@ -43,6 +43,13 @@ module.exports = {
           "^/preference_url": ''
         }
       },
+      '/schedule_url':{
+        target: 'http://localhost:8085',
+        changeOrigin: true,
+        pathRewrite: {
+          "^/schedule_url": ''
+        }
+      },
     }
   },
 };
