@@ -50,6 +50,7 @@ import { PaperTable } from "@/components";
 import { FormGroupInput as FGInput } from "@/components";
 import preferenceApi from "@/api/preference";
 import staffApi from '@/api/staff'
+import Vue from "vue";
 
 export default {
   components: {
@@ -88,6 +89,8 @@ export default {
       formLabelWidth: '120px',
       row:'',
       staffId:'',
+      preferenceId:'',
+      type:'',
     }
   },
   created() {
@@ -110,6 +113,24 @@ export default {
     })
   },
   methods: {
+    updateTable(){
+      preferenceApi.get().then(re => {
+          this.tableData=re.data.list
+          this.tableData.forEach(item=>{
+            switch (item.type){
+              case 0:item.type='工作日偏好'
+                break
+              case 1:item.type='工作时间偏好'
+                break
+              case 2:item.type='班次时长偏好'
+                break
+            }
+          })
+        },
+        re=>{
+          console.log("员工偏好数据请求失败");
+        })
+    },
     handleEdit(row) {
       this.updateDialogFormVisible=true
       this.row=row
@@ -135,9 +156,31 @@ export default {
           const query = {
             value: this.ruleForm.value
           }
-          this.staffId = await staffApi.getId(this.row.staffName)
-        } else {
-          this.$message.error('修改员工偏好失败！')
+          const re1 = await staffApi.getId(this.row.staffName)
+          this.staffId=re1.data.list[0]
+          switch (this.row.type){
+            case '工作日偏好':this.type=0
+              break
+            case '工作时间偏好':this.type=1
+              break
+            case '班次时长偏好':this.type=2
+              break
+          }
+          const re2=await preferenceApi.getId(this.staffId,this.type)
+          this.preferenceId=re2.data
+          preferenceApi.edit(this.staffId,this.preferenceId,this.type,query).then(re=>{
+            if(re.errmsg==='成功'){
+              this.$message.success('修改员工偏好成功')
+              this.updateDialogFormVisible=false
+              this.updateTable()
+              const rowIndex = this.tableData.indexOf(this.row)
+              Vue.set(this.options,rowIndex,this.ruleForm.value)
+              this.$refs.ruleForm.resetFields();
+            }
+            else {
+              this.$message.error('修改员工失败！')
+            }
+          })
         }
       });
     },

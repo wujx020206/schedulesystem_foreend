@@ -7,6 +7,7 @@ import StoreManagement from "@/views/StoreManagement.vue";
 import BusinessForecast from "@/views/BusinessForecast.vue";
 import SchedulingRules from "@/views/SchedulingRules.vue";
 import Preference from "@/views/StaffPreferences.vue";
+import Schedule from "@/views/Schedule.vue";
 
 const routes = [
   {
@@ -47,8 +48,12 @@ const routes = [
         path: "/preference",
         name:"preference",
         component: Preference
+      },
+      {
+        path:"/schedule",
+        name:"schedule",
+        component: Schedule
       }
-
     ],
   },
   { path: "*", component: NotFound },

@@ -301,14 +301,11 @@ export default {
               this.$refs.ruleForm2.resetFields();
             }
             else {
-              this.$message.error('修改门店失败！')
+              this.$message.error('修改员工失败！')
             }
           })
         }
       })
-    },
-    closeDeleteForm() {
-      this.deleteDialogFormVisible=false
     },
   },
   computed:{
