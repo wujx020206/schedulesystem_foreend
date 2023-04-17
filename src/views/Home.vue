@@ -62,10 +62,7 @@
     <el-row>
       <el-col :offset="2">
     <div class="col-10">
-    <b-calendar
-      block locale="zh" today-variant="info" nav-button-variant="primary"
-      class="border rounded p-4" style="background: white"
-      v-bind="labels[locale] || {}"/>
+    <el-calendar/>
     </div>
       </el-col>
     </el-row>
