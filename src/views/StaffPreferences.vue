@@ -107,6 +107,8 @@ export default {
             break
         }
         options1.push(item.type)
+        if(!item.value)
+          item.value='默认'
       })
       const set1=new Set(options1)
       this.options=Array.from(set1)

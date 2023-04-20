@@ -2,15 +2,15 @@
   <div class="card">
     <div class="card-header">
       <div class="el-select-center" v-if="value">
-      <el-select v-model="store1" clearable placeholder="请选择门店排班表" @clear="clearSelection"
-                 style="width: 300px; height: 60px;">
-        <el-option
-          v-for="item in storeOptions1"
-          :key="item"
-          :label="item"
-          :value="item">
-        </el-option>
-      </el-select>
+        <el-select v-model="store1" clearable placeholder="请选择门店排班表" @clear="clearSelection"
+                   style="width: 300px; height: 60px;">
+          <el-option
+            v-for="item in storeOptions1"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
       </div>
       <div class="container">
         <el-switch
@@ -20,17 +20,17 @@
           style="margin-right: 80px;">
         </el-switch>
         <div v-if="value">
-        <el-button :disabled="currentPage === 1" @click="previousPage"
-                   icon="el-icon-arrow-left" style="border: none;" circle></el-button>
-        <el-button-group>
-          <el-button v-for="(date, index) in dates" :key="index"
-                     :type="currentPage === index+1 ? 'primary' : ''"
-                     @click="changePage(index+1)">
-            {{ date }}
-          </el-button>
-        </el-button-group>
-        <el-button :disabled="currentPage === totalPage" @click="nextPage"
-                   style="border: none;" circle><i class="el-icon-arrow-right el-icon--right"></i></el-button>
+          <el-button :disabled="currentPage === 1" @click="previousPage"
+                     icon="el-icon-arrow-left" style="border: none;" circle></el-button>
+          <el-button-group>
+            <el-button v-for="(item, index) in displayedDateRanges" :key="index"
+                       :type="currentPage === item.page? 'primary' : ''"
+                       @click="changePage(item.page)">
+              {{ item.monday }} - {{ item.sunday }}
+            </el-button>
+          </el-button-group>
+          <el-button :disabled="currentPage === totalPage" @click="nextPage"
+                     style="border: none;" circle><i class="el-icon-arrow-right el-icon--right"></i></el-button>
         </div>
       </div>
       <div style="margin-top: 40px;" class="container" v-if="value">
@@ -80,95 +80,95 @@
     </div>
     <!-- 排班表-->
     <div class="card-body" v-if="value">
-    <el-table :data="filteredData">
-      <el-table-column prop="time" label="时间段"></el-table-column>
-      <el-table-column label="周一" prop="mon">
-        <template slot-scope="scope">
-          <div v-if="scope.row.mon">
-            <div v-for="(item, index) in scope.row.mon">
-              <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
-                {{item.start}}-{{item.end}}
-              <div class="name">{{item.name}}</div>
-              <div class="position">{{item.position}}</div>
+      <el-table :data="filteredData">
+        <el-table-column prop="time" label="时间段"></el-table-column>
+        <el-table-column label="周一" prop="mon">
+          <template slot-scope="scope">
+            <div v-if="scope.row.mon">
+              <div v-for="(item, index) in scope.row.mon">
+                <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
+                  {{item.start}}-{{item.end}}
+                  <div class="name">{{item.name}}</div>
+                  <div class="position">{{item.position}}</div>
+                </div>
               </div>
             </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="周二" prop="tues">
-        <template slot-scope="scope">
-          <div v-if="scope.row.tues">
-            <div v-for="(item, index) in scope.row.tues">
-              <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
-                {{item.start}}-{{item.end}}
-              <div class="name">{{item.name}}</div>
-              <div class="position">{{item.position}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="周二" prop="tues">
+          <template slot-scope="scope">
+            <div v-if="scope.row.tues">
+              <div v-for="(item, index) in scope.row.tues">
+                <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
+                  {{item.start}}-{{item.end}}
+                  <div class="name">{{item.name}}</div>
+                  <div class="position">{{item.position}}</div>
+                </div>
               </div>
             </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="周三" prop="wed">
-        <template slot-scope="scope">
-          <div v-if="scope.row.wed">
-            <div v-for="(item, index) in scope.row.wed">
-              <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
-                {{item.start}}-{{item.end}}
-              <div class="name">{{item.name}}</div>
-              <div class="position">{{item.position}}</div></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="周三" prop="wed">
+          <template slot-scope="scope">
+            <div v-if="scope.row.wed">
+              <div v-for="(item, index) in scope.row.wed">
+                <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
+                  {{item.start}}-{{item.end}}
+                  <div class="name">{{item.name}}</div>
+                  <div class="position">{{item.position}}</div></div>
+              </div>
             </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="周四" prop="thurs">
-        <template slot-scope="scope">
-          <div v-if="scope.row.thurs">
-            <div v-for="(item, index) in scope.row.thurs">
-              <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
-                {{item.start}}-{{item.end}}
-              <div class="name">{{item.name}}</div>
-              <div class="position">{{item.position}}</div></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="周四" prop="thurs">
+          <template slot-scope="scope">
+            <div v-if="scope.row.thurs">
+              <div v-for="(item, index) in scope.row.thurs">
+                <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
+                  {{item.start}}-{{item.end}}
+                  <div class="name">{{item.name}}</div>
+                  <div class="position">{{item.position}}</div></div>
+              </div>
             </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="周五" prop="fri">
-        <template slot-scope="scope">
-          <div v-if="scope.row.fri">
-            <div v-for="(item, index) in scope.row.fri">
-              <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
-                {{item.start}}-{{item.end}}
-              <div class="name">{{item.name}}</div>
-              <div class="position">{{item.position}}</div></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="周五" prop="fri">
+          <template slot-scope="scope">
+            <div v-if="scope.row.fri">
+              <div v-for="(item, index) in scope.row.fri">
+                <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
+                  {{item.start}}-{{item.end}}
+                  <div class="name">{{item.name}}</div>
+                  <div class="position">{{item.position}}</div></div>
+              </div>
             </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="周六" prop="sat">
-        <template slot-scope="scope">
-          <div v-if="scope.row.sat">
-            <div v-for="(item, index) in scope.row.sat">
-              <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
-                {{item.start}}-{{item.end}}
-              <div class="name">{{item.name}}</div>
-              <div class="position">{{item.position}}</div></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="周六" prop="sat">
+          <template slot-scope="scope">
+            <div v-if="scope.row.sat">
+              <div v-for="(item, index) in scope.row.sat">
+                <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
+                  {{item.start}}-{{item.end}}
+                  <div class="name">{{item.name}}</div>
+                  <div class="position">{{item.position}}</div></div>
+              </div>
             </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="周日" prop="sun">
-        <template slot-scope="scope">
-          <div v-if="scope.row.sun">
-            <div v-for="(item, index) in scope.row.sun">
-              <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
-                {{item.start}}-{{item.end}}
-              <div class="name">{{item.name}}</div>
-              <div class="position">{{item.position}}</div></div>
+          </template>
+        </el-table-column>
+        <el-table-column label="周日" prop="sun">
+          <template slot-scope="scope">
+            <div v-if="scope.row.sun">
+              <div v-for="(item, index) in scope.row.sun">
+                <div class="schedule-item" :style="{ backgroundColor: item.color}" v-if="item.name">
+                  {{item.start}}-{{item.end}}
+                  <div class="name">{{item.name}}</div>
+                  <div class="position">{{item.position}}</div></div>
+              </div>
             </div>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
     <div class="card-body" v-else>
       <el-table :data="filteredData1">
@@ -212,6 +212,8 @@ import ruleApi from "@/api/rule";
 export default {
   data() {
     return {
+      mondayAndSunday:[],
+      dates:[],
       updateDialogFormVisible: false,
       row:'',
       ruleForm: {
@@ -259,9 +261,8 @@ export default {
       store2:'',
       select1:'',
       select3:'',
-      currentPage:2,
-      pageSize: 1,
-      total: 3,
+      currentPage:8,
+      pageSize: 3,
       tableData: [
         {
           time:'08:00-08:30', mon: [], tues:[], wed:[], thurs:[], fri:[], sat:[], sun:[]
@@ -468,6 +469,7 @@ export default {
           console.log("门店管理数据请求失败");
         })
     })
+    this.getMondayAndSunday()
   },
   methods: {
     resetForm() {
@@ -494,18 +496,18 @@ export default {
             return re.data
           })
           scheduleApi.edit(storeId,id,this.ruleForm.name).then(re=>{
-            if (re.errmsg === '成功'){
-              this.$message.success('修改排班成功')
-              this.updateDialogFormVisible = false
-              this.row.name=this.ruleForm.name
-              const option=this.options[1].options.filter(item=>item!==this.row.name)
-              option.push(this.ruleForm.name)
-              this.options[1].options=option
-              this.$refs.ruleForm.resetFields()
-            } else {
-              this.$message.error('修改排班失败！')
-            }
-          },
+              if (re.errmsg === '成功'){
+                this.$message.success('修改排班成功')
+                this.updateDialogFormVisible = false
+                this.row.name=this.ruleForm.name
+                const option=this.options[1].options.filter(item=>item!==this.row.name)
+                option.push(this.ruleForm.name)
+                this.options[1].options=option
+                this.$refs.ruleForm.resetFields()
+              } else {
+                this.$message.error('修改排班失败！')
+              }
+            },
             re => {
               console.log("门店管理数据请求失败")
             })
@@ -2380,24 +2382,43 @@ export default {
           this.options1[1].options.push(data[i].staff.name)
       }
       this.newTable=this.dayTable
-    }
+    },
+    getMondayAndSunday() {
+      const today = new Date()
+      const todayOfWeek = today.getDay()
+      const daysToMonday = todayOfWeek - 1
+      const daysToSunday = 7 - todayOfWeek
+      for (let i = -7; i <= 7; i++) {
+        const monday = new Date(today);
+        monday.setDate(today.getDate() - daysToMonday + (i * 7));
+
+        const sunday = new Date(today);
+        sunday.setDate(today.getDate() + daysToSunday + (i * 7));
+
+        this.dates.push({
+          monday: this.formatDate(monday),
+          sunday: this.formatDate(sunday)
+        })
+      }
+      for (let i = 0; i <= this.dates.length; i++) {
+        this.mondayAndSunday.push({
+          monday: this.dates[i].monday,
+          sunday: this.dates[i].sunday
+        })
+      }
+    },
   },
   computed: {
     totalPage() {
-      return Math.ceil(this.total / this.pageSize);
+      return 15
     },
-    dates() {
-      let currentDate = new Date('2023-04-03');
-      let currentDateEnd=new Date('2023-04-09');
-      let prevWeek = new Date('2023-03-27');
-      let preWeekEnd=new Date('2023-04-02');
-      let nextWeek = new Date('2023-04-10');
-      let nextWeekEnd = new Date('2023-04-16');
-      return [
-        this.formatDate(prevWeek)+'-'+this.formatDate(preWeekEnd),
-        this.formatDate(currentDate)+'-'+this.formatDate(currentDateEnd),
-        this.formatDate(nextWeek)+'-'+this.formatDate(nextWeekEnd),
-      ];
+    displayedDateRanges() {
+      const currentPageGroup = Math.ceil(this.currentPage / this.pageSize)
+      const startPage = (currentPageGroup - 1) * this.pageSize + 1
+      const endPage = startPage + this.pageSize - 1
+      return this.mondayAndSunday.slice(startPage - 1, endPage).map((range, index) => {
+        return { ...range, page: startPage + index }
+      })
     },
     filteredData(){
       if(this.select1){
@@ -2418,27 +2439,27 @@ export default {
               } ),
               tues: item.tues.filter(schedule => {
                 if(schedule.position)
-                return schedule.position.includes(this.select1)
+                  return schedule.position.includes(this.select1)
               } ),
               wed: item.wed.filter(schedule => {
                 if(schedule.position)
-                return schedule.position.includes(this.select1)
+                  return schedule.position.includes(this.select1)
               } ),
               sat: item.sat.filter(schedule => {
                 if(schedule.position)
-                return schedule.position.includes(this.select1)
+                  return schedule.position.includes(this.select1)
               } ),
               thurs: item.thurs.filter(schedule => {
                 if(schedule.position)
-                return schedule.position.includes(this.select1)
+                  return schedule.position.includes(this.select1)
               } ),
               fri: item.fri.filter(schedule => {
                 if(schedule.position)
-                return schedule.position.includes(this.select1)
+                  return schedule.position.includes(this.select1)
               } ),
               sun: item.sun.filter(schedule => {
                 if(schedule.position)
-                return schedule.position.includes(this.select1)
+                  return schedule.position.includes(this.select1)
               } ),
             }
           })
@@ -2471,15 +2492,20 @@ export default {
       if(this.select3){
         if(this.options1[0].options.includes(this.select3)||this.options1[2].options.includes(this.select3)){
           return this.newTable.filter(item => {
-              return item.position.includes(this.select3)
+            return item.position.includes(this.select3)
           })
         }
         return this.newTable.filter(item => {
-            return item.name === this.select3
+          return item.name === this.select3
         })
       }
       return this.newTable
-    }
+    },
+    visibleDates() {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.mondayAndSunday.slice(startIndex, endIndex);
+    },
   },
   watch:{
     store1(newValue){
@@ -2499,6 +2525,13 @@ export default {
       }
     }
   },
+  mounted() {
+    this.pageArray = this.mondayAndSunday.map(({monday, sunday}) => {
+      // 使用 Moment.js 进行日期格式化，格式化后的字符串可以按需要进行调整
+      return `${moment(monday).format('YYYY/MM/DD')} - ${moment(sunday).format('YYYY/MM/DD')}`;
+    })
+    console.log(this.pageArray)
+  }
 }
 </script>
 
