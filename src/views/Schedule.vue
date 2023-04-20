@@ -817,1528 +817,522 @@ export default {
       const storeId = await storeApi.specific(selectedValue).then(re => {
         return re.data.id
       })
-      var data=''
-      switch (this.currentPage) {
-        case 1:
-          data = await scheduleApi.getByWeek(storeId, '2023-03-27').then(re => {
-            return re.data.list
-          })
-          break;
-        case 2:
-          data = await scheduleApi.getByWeek(storeId, '2023-04-03').then(re => {
-            return re.data.list
-          })
-          break;
-        case 3:
-          data = await scheduleApi.getByWeek(storeId, '2023-04-10').then(re => {
-            return re.data.list
-          })
-          break;
+      function formatDate(str) {
+        const arr = str.split("月").map((item) => item.replace("日", ""))
+        const date = new Date(2023, arr[0] - 1, arr[1])
+        const year = date.getFullYear()
+        const month = (date.getMonth() + 1).toString().padStart(2, "0")
+        const day = date.getDate().toString().padStart(2, "0")
+        return `${year}-${month}-${day}`
       }
-      switch (this.currentPage){
-        case 1:
-          for(var i=0;i<data.length;i++){
-            if(data[i].startTime.substring(0, 10)==='2023-03-27'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].mon.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-03-28'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].tues.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-03-29'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].wed.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-03-30'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].thurs.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-03-31'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].fri.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-01'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].sat.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-02'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].sun.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
+      function addDays(str,day){
+        let dateStr = str
+        let date = new Date(dateStr);
+        date.setDate(date.getDate() + day);
+        let newDateStr = date.toISOString().substr(0, 10)
+        return newDateStr
+      }
+      const selectDate=formatDate(this.mondayAndSunday[this.currentPage-1].monday)
+      const data=await scheduleApi.getByWeek(storeId, selectDate).then(re => {
+          return re.data.list})
+      for(var i=0;i<data.length;i++){
+        if(data[i].startTime.substring(0, 10)===selectDate){
+          var startTime = data[i].startTime.substring(11, 16)
+          var endTime = data[i].endTime.substring(11, 16)
+          var index=0
+          switch (startTime){
+            case '08:00':index=0;break;
+            case '08:30':index=1;break;
+            case '09:00':index=2;break;
+            case '09:30':index=3;break;
+            case '10:00':index=4;break;
+            case '10:30':index=5;break;
+            case '11:00':index=6;break;
+            case '11:30':index=7;break;
+            case '12:00':index=8;break;
+            case '12:30':index=9;break;
+            case '13:00':index=10;break;
+            case '13:30':index=11;break;
+            case '14:00':index=12;break;
+            case '14:30':index=13;break;
+            case '15:00':index=14;break;
+            case '15:30':index=15;break;
+            case '16:00':index=16;break;
+            case '16:30':index=17;break;
+            case '17:00':index=18;break;
+            case '17:30':index=19;break;
+            case '18:00':index=20;break;
+            case '18:30':index=21;break;
+            case '19:00':index=22;break;
+            case '19:30':index=23;break;
+            case '20:00':index=24;break;
+            case '20:30':index=25;break;
+            case '21:00':index=26;break;
+            case '21:30':index=27;break;
+            case '22:00':index=28;break;
+            case '22:30':index=29;break;
+            case '23:00':index=30;break;
           }
-          break;
-        case 2:
-          for(var i=0;i<data.length;i++){
-            if(data[i].startTime.substring(0, 10)==='2023-04-03'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
+          while(startTime!==endTime){
+            let temp=startTime
+            let timeObject = moment(startTime, 'HH:mm');
+            timeObject.add(30, 'minutes');
+            startTime = timeObject.format('HH:mm');
+            const query={
+              start:temp,
+              end:startTime,
+              name:data[i].staff.name,
+              position:data[i].staff.position,
+              color:this.colors[Math.floor(Math.random() * this.colors.length)]
+            }
+            this.tableData[index].mon.push(query)
+            if(data[i].staff.position){
+              if(data[i].staff.position.includes('（')){
+                const arr = data[i].staff.position.split('（')
+                const position = arr[0]
+                if(!this.options[0].options.includes(position))
+                  this.options[0].options.push(position)
+                const index = data[i].staff.position.indexOf('（')
+                const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
+                if(!this.options[2].options.includes(subStr))
+                  this.options[2].options.push(subStr)
               }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].mon.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
+              else if(!data[i].staff.position.includes('（')){
+                if(!this.options[0].options.includes(data[i].staff.position))
+                  this.options[0].options.push(data[i].staff.position)
               }
             }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-04'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].tues.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-05'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].wed.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-06'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].thurs.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-07'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].fri.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-08'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].sat.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-09'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].sun.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
+            if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
+              this.options[1].options.push(data[i].staff.name)
+            index+=1
           }
-          break;
-        case 3:
-          for(var i=0;i<data.length;i++){
-            if(data[i].startTime.substring(0, 10)==='2023-04-10'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].mon.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-11'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].tues.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-12'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].wed.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-13'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].thurs.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-14'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].fri.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-15'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].sat.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
-            else if(data[i].startTime.substring(0, 10)==='2023-04-16'){
-              var startTime = data[i].startTime.substring(11, 16)
-              var endTime = data[i].endTime.substring(11, 16)
-              var index=0
-              switch (startTime){
-                case '08:00':index=0;break;
-                case '08:30':index=1;break;
-                case '09:00':index=2;break;
-                case '09:30':index=3;break;
-                case '10:00':index=4;break;
-                case '10:30':index=5;break;
-                case '11:00':index=6;break;
-                case '11:30':index=7;break;
-                case '12:00':index=8;break;
-                case '12:30':index=9;break;
-                case '13:00':index=10;break;
-                case '13:30':index=11;break;
-                case '14:00':index=12;break;
-                case '14:30':index=13;break;
-                case '15:00':index=14;break;
-                case '15:30':index=15;break;
-                case '16:00':index=16;break;
-                case '16:30':index=17;break;
-                case '17:00':index=18;break;
-                case '17:30':index=19;break;
-                case '18:00':index=20;break;
-                case '18:30':index=21;break;
-                case '19:00':index=22;break;
-                case '19:30':index=23;break;
-                case '20:00':index=24;break;
-                case '20:30':index=25;break;
-                case '21:00':index=26;break;
-                case '21:30':index=27;break;
-                case '22:00':index=28;break;
-                case '22:30':index=29;break;
-                case '23:00':index=30;break;
-              }
-              while(startTime!==endTime){
-                let temp=startTime
-                let timeObject = moment(startTime, 'HH:mm');
-                timeObject.add(30, 'minutes');
-                startTime = timeObject.format('HH:mm');
-                const query={
-                  start:temp,
-                  end:startTime,
-                  name:data[i].staff.name,
-                  position:data[i].staff.position,
-                  color:this.colors[Math.floor(Math.random() * this.colors.length)]
-                }
-                this.tableData[index].sun.push(query)
-                if(data[i].staff.position){
-                  if(data[i].staff.position.includes('（')){
-                    const arr = data[i].staff.position.split('（')
-                    const position = arr[0]
-                    if(!this.options[0].options.includes(position))
-                      this.options[0].options.push(position)
-                    const index = data[i].staff.position.indexOf('（')
-                    const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
-                    if(!this.options[2].options.includes(subStr))
-                      this.options[2].options.push(subStr)
-                  }
-                  else if(!data[i].staff.position.includes('（')){
-                    if(!this.options[0].options.includes(data[i].staff.position))
-                      this.options[0].options.push(data[i].staff.position)
-                  }
-                }
-                if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
-                  this.options[1].options.push(data[i].staff.name)
-                index+=1
-              }
-            }
+        }
+        else if(data[i].startTime.substring(0, 10)===addDays(selectDate,1)){
+          var startTime = data[i].startTime.substring(11, 16)
+          var endTime = data[i].endTime.substring(11, 16)
+          var index=0
+          switch (startTime){
+            case '08:00':index=0;break;
+            case '08:30':index=1;break;
+            case '09:00':index=2;break;
+            case '09:30':index=3;break;
+            case '10:00':index=4;break;
+            case '10:30':index=5;break;
+            case '11:00':index=6;break;
+            case '11:30':index=7;break;
+            case '12:00':index=8;break;
+            case '12:30':index=9;break;
+            case '13:00':index=10;break;
+            case '13:30':index=11;break;
+            case '14:00':index=12;break;
+            case '14:30':index=13;break;
+            case '15:00':index=14;break;
+            case '15:30':index=15;break;
+            case '16:00':index=16;break;
+            case '16:30':index=17;break;
+            case '17:00':index=18;break;
+            case '17:30':index=19;break;
+            case '18:00':index=20;break;
+            case '18:30':index=21;break;
+            case '19:00':index=22;break;
+            case '19:30':index=23;break;
+            case '20:00':index=24;break;
+            case '20:30':index=25;break;
+            case '21:00':index=26;break;
+            case '21:30':index=27;break;
+            case '22:00':index=28;break;
+            case '22:30':index=29;break;
+            case '23:00':index=30;break;
           }
-          break;
+          while(startTime!==endTime){
+            let temp=startTime
+            let timeObject = moment(startTime, 'HH:mm');
+            timeObject.add(30, 'minutes');
+            startTime = timeObject.format('HH:mm');
+            const query={
+              start:temp,
+              end:startTime,
+              name:data[i].staff.name,
+              position:data[i].staff.position,
+              color:this.colors[Math.floor(Math.random() * this.colors.length)]
+            }
+            this.tableData[index].tues.push(query)
+            if(data[i].staff.position){
+              if(data[i].staff.position.includes('（')){
+                const arr = data[i].staff.position.split('（')
+                const position = arr[0]
+                if(!this.options[0].options.includes(position))
+                  this.options[0].options.push(position)
+                const index = data[i].staff.position.indexOf('（')
+                const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
+                if(!this.options[2].options.includes(subStr))
+                  this.options[2].options.push(subStr)
+              }
+              else if(!data[i].staff.position.includes('（')){
+                if(!this.options[0].options.includes(data[i].staff.position))
+                  this.options[0].options.push(data[i].staff.position)
+              }
+            }
+            if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
+              this.options[1].options.push(data[i].staff.name)
+            index+=1
+          }
+        }
+        else if(data[i].startTime.substring(0, 10)===addDays(selectDate,2)){
+          var startTime = data[i].startTime.substring(11, 16)
+          var endTime = data[i].endTime.substring(11, 16)
+          var index=0
+          switch (startTime){
+            case '08:00':index=0;break;
+            case '08:30':index=1;break;
+            case '09:00':index=2;break;
+            case '09:30':index=3;break;
+            case '10:00':index=4;break;
+            case '10:30':index=5;break;
+            case '11:00':index=6;break;
+            case '11:30':index=7;break;
+            case '12:00':index=8;break;
+            case '12:30':index=9;break;
+            case '13:00':index=10;break;
+            case '13:30':index=11;break;
+            case '14:00':index=12;break;
+            case '14:30':index=13;break;
+            case '15:00':index=14;break;
+            case '15:30':index=15;break;
+            case '16:00':index=16;break;
+            case '16:30':index=17;break;
+            case '17:00':index=18;break;
+            case '17:30':index=19;break;
+            case '18:00':index=20;break;
+            case '18:30':index=21;break;
+            case '19:00':index=22;break;
+            case '19:30':index=23;break;
+            case '20:00':index=24;break;
+            case '20:30':index=25;break;
+            case '21:00':index=26;break;
+            case '21:30':index=27;break;
+            case '22:00':index=28;break;
+            case '22:30':index=29;break;
+            case '23:00':index=30;break;
+          }
+          while(startTime!==endTime){
+            let temp=startTime
+            let timeObject = moment(startTime, 'HH:mm');
+            timeObject.add(30, 'minutes');
+            startTime = timeObject.format('HH:mm');
+            const query={
+              start:temp,
+              end:startTime,
+              name:data[i].staff.name,
+              position:data[i].staff.position,
+              color:this.colors[Math.floor(Math.random() * this.colors.length)]
+            }
+            this.tableData[index].wed.push(query)
+            if(data[i].staff.position){
+              if(data[i].staff.position.includes('（')){
+                const arr = data[i].staff.position.split('（')
+                const position = arr[0]
+                if(!this.options[0].options.includes(position))
+                  this.options[0].options.push(position)
+                const index = data[i].staff.position.indexOf('（')
+                const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
+                if(!this.options[2].options.includes(subStr))
+                  this.options[2].options.push(subStr)
+              }
+              else if(!data[i].staff.position.includes('（')){
+                if(!this.options[0].options.includes(data[i].staff.position))
+                  this.options[0].options.push(data[i].staff.position)
+              }
+            }
+            if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
+              this.options[1].options.push(data[i].staff.name)
+            index+=1
+          }
+        }
+        else if(data[i].startTime.substring(0, 10)===addDays(selectDate,3)){
+          var startTime = data[i].startTime.substring(11, 16)
+          var endTime = data[i].endTime.substring(11, 16)
+          var index=0
+          switch (startTime){
+            case '08:00':index=0;break;
+            case '08:30':index=1;break;
+            case '09:00':index=2;break;
+            case '09:30':index=3;break;
+            case '10:00':index=4;break;
+            case '10:30':index=5;break;
+            case '11:00':index=6;break;
+            case '11:30':index=7;break;
+            case '12:00':index=8;break;
+            case '12:30':index=9;break;
+            case '13:00':index=10;break;
+            case '13:30':index=11;break;
+            case '14:00':index=12;break;
+            case '14:30':index=13;break;
+            case '15:00':index=14;break;
+            case '15:30':index=15;break;
+            case '16:00':index=16;break;
+            case '16:30':index=17;break;
+            case '17:00':index=18;break;
+            case '17:30':index=19;break;
+            case '18:00':index=20;break;
+            case '18:30':index=21;break;
+            case '19:00':index=22;break;
+            case '19:30':index=23;break;
+            case '20:00':index=24;break;
+            case '20:30':index=25;break;
+            case '21:00':index=26;break;
+            case '21:30':index=27;break;
+            case '22:00':index=28;break;
+            case '22:30':index=29;break;
+            case '23:00':index=30;break;
+          }
+          while(startTime!==endTime){
+            let temp=startTime
+            let timeObject = moment(startTime, 'HH:mm');
+            timeObject.add(30, 'minutes');
+            startTime = timeObject.format('HH:mm');
+            const query={
+              start:temp,
+              end:startTime,
+              name:data[i].staff.name,
+              position:data[i].staff.position,
+              color:this.colors[Math.floor(Math.random() * this.colors.length)]
+            }
+            this.tableData[index].thurs.push(query)
+            if(data[i].staff.position){
+              if(data[i].staff.position.includes('（')){
+                const arr = data[i].staff.position.split('（')
+                const position = arr[0]
+                if(!this.options[0].options.includes(position))
+                  this.options[0].options.push(position)
+                const index = data[i].staff.position.indexOf('（')
+                const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
+                if(!this.options[2].options.includes(subStr))
+                  this.options[2].options.push(subStr)
+              }
+              else if(!data[i].staff.position.includes('（')){
+                if(!this.options[0].options.includes(data[i].staff.position))
+                  this.options[0].options.push(data[i].staff.position)
+              }
+            }
+            if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
+              this.options[1].options.push(data[i].staff.name)
+            index+=1
+          }
+        }
+        else if(data[i].startTime.substring(0, 10)===addDays(selectDate,4)){
+          var startTime = data[i].startTime.substring(11, 16)
+          var endTime = data[i].endTime.substring(11, 16)
+          var index=0
+          switch (startTime){
+            case '08:00':index=0;break;
+            case '08:30':index=1;break;
+            case '09:00':index=2;break;
+            case '09:30':index=3;break;
+            case '10:00':index=4;break;
+            case '10:30':index=5;break;
+            case '11:00':index=6;break;
+            case '11:30':index=7;break;
+            case '12:00':index=8;break;
+            case '12:30':index=9;break;
+            case '13:00':index=10;break;
+            case '13:30':index=11;break;
+            case '14:00':index=12;break;
+            case '14:30':index=13;break;
+            case '15:00':index=14;break;
+            case '15:30':index=15;break;
+            case '16:00':index=16;break;
+            case '16:30':index=17;break;
+            case '17:00':index=18;break;
+            case '17:30':index=19;break;
+            case '18:00':index=20;break;
+            case '18:30':index=21;break;
+            case '19:00':index=22;break;
+            case '19:30':index=23;break;
+            case '20:00':index=24;break;
+            case '20:30':index=25;break;
+            case '21:00':index=26;break;
+            case '21:30':index=27;break;
+            case '22:00':index=28;break;
+            case '22:30':index=29;break;
+            case '23:00':index=30;break;
+          }
+          while(startTime!==endTime){
+            let temp=startTime
+            let timeObject = moment(startTime, 'HH:mm');
+            timeObject.add(30, 'minutes');
+            startTime = timeObject.format('HH:mm');
+            const query={
+              start:temp,
+              end:startTime,
+              name:data[i].staff.name,
+              position:data[i].staff.position,
+              color:this.colors[Math.floor(Math.random() * this.colors.length)]
+            }
+            this.tableData[index].fri.push(query)
+            if(data[i].staff.position){
+              if(data[i].staff.position.includes('（')){
+                const arr = data[i].staff.position.split('（')
+                const position = arr[0]
+                if(!this.options[0].options.includes(position))
+                  this.options[0].options.push(position)
+                const index = data[i].staff.position.indexOf('（')
+                const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
+                if(!this.options[2].options.includes(subStr))
+                  this.options[2].options.push(subStr)
+              }
+              else if(!data[i].staff.position.includes('（')){
+                if(!this.options[0].options.includes(data[i].staff.position))
+                  this.options[0].options.push(data[i].staff.position)
+              }
+            }
+            if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
+              this.options[1].options.push(data[i].staff.name)
+            index+=1
+          }
+        }
+        else if(data[i].startTime.substring(0, 10)===addDays(selectDate,5)){
+          var startTime = data[i].startTime.substring(11, 16)
+          var endTime = data[i].endTime.substring(11, 16)
+          var index=0
+          switch (startTime){
+            case '08:00':index=0;break;
+            case '08:30':index=1;break;
+            case '09:00':index=2;break;
+            case '09:30':index=3;break;
+            case '10:00':index=4;break;
+            case '10:30':index=5;break;
+            case '11:00':index=6;break;
+            case '11:30':index=7;break;
+            case '12:00':index=8;break;
+            case '12:30':index=9;break;
+            case '13:00':index=10;break;
+            case '13:30':index=11;break;
+            case '14:00':index=12;break;
+            case '14:30':index=13;break;
+            case '15:00':index=14;break;
+            case '15:30':index=15;break;
+            case '16:00':index=16;break;
+            case '16:30':index=17;break;
+            case '17:00':index=18;break;
+            case '17:30':index=19;break;
+            case '18:00':index=20;break;
+            case '18:30':index=21;break;
+            case '19:00':index=22;break;
+            case '19:30':index=23;break;
+            case '20:00':index=24;break;
+            case '20:30':index=25;break;
+            case '21:00':index=26;break;
+            case '21:30':index=27;break;
+            case '22:00':index=28;break;
+            case '22:30':index=29;break;
+            case '23:00':index=30;break;
+          }
+          while(startTime!==endTime){
+            let temp=startTime
+            let timeObject = moment(startTime, 'HH:mm');
+            timeObject.add(30, 'minutes');
+            startTime = timeObject.format('HH:mm');
+            const query={
+              start:temp,
+              end:startTime,
+              name:data[i].staff.name,
+              position:data[i].staff.position,
+              color:this.colors[Math.floor(Math.random() * this.colors.length)]
+            }
+            this.tableData[index].sat.push(query)
+            if(data[i].staff.position){
+              if(data[i].staff.position.includes('（')){
+                const arr = data[i].staff.position.split('（')
+                const position = arr[0]
+                if(!this.options[0].options.includes(position))
+                  this.options[0].options.push(position)
+                const index = data[i].staff.position.indexOf('（')
+                const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
+                if(!this.options[2].options.includes(subStr))
+                  this.options[2].options.push(subStr)
+              }
+              else if(!data[i].staff.position.includes('（')){
+                if(!this.options[0].options.includes(data[i].staff.position))
+                  this.options[0].options.push(data[i].staff.position)
+              }
+            }
+            if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
+              this.options[1].options.push(data[i].staff.name)
+            index+=1
+          }
+        }
+        else if(data[i].startTime.substring(0, 10)===addDays(selectDate,6)){
+          var startTime = data[i].startTime.substring(11, 16)
+          var endTime = data[i].endTime.substring(11, 16)
+          var index=0
+          switch (startTime){
+            case '08:00':index=0;break;
+            case '08:30':index=1;break;
+            case '09:00':index=2;break;
+            case '09:30':index=3;break;
+            case '10:00':index=4;break;
+            case '10:30':index=5;break;
+            case '11:00':index=6;break;
+            case '11:30':index=7;break;
+            case '12:00':index=8;break;
+            case '12:30':index=9;break;
+            case '13:00':index=10;break;
+            case '13:30':index=11;break;
+            case '14:00':index=12;break;
+            case '14:30':index=13;break;
+            case '15:00':index=14;break;
+            case '15:30':index=15;break;
+            case '16:00':index=16;break;
+            case '16:30':index=17;break;
+            case '17:00':index=18;break;
+            case '17:30':index=19;break;
+            case '18:00':index=20;break;
+            case '18:30':index=21;break;
+            case '19:00':index=22;break;
+            case '19:30':index=23;break;
+            case '20:00':index=24;break;
+            case '20:30':index=25;break;
+            case '21:00':index=26;break;
+            case '21:30':index=27;break;
+            case '22:00':index=28;break;
+            case '22:30':index=29;break;
+            case '23:00':index=30;break;
+          }
+          while(startTime!==endTime){
+            let temp=startTime
+            let timeObject = moment(startTime, 'HH:mm');
+            timeObject.add(30, 'minutes');
+            startTime = timeObject.format('HH:mm');
+            const query={
+              start:temp,
+              end:startTime,
+              name:data[i].staff.name,
+              position:data[i].staff.position,
+              color:this.colors[Math.floor(Math.random() * this.colors.length)]
+            }
+            this.tableData[index].sun.push(query)
+            if(data[i].staff.position){
+              if(data[i].staff.position.includes('（')){
+                const arr = data[i].staff.position.split('（')
+                const position = arr[0]
+                if(!this.options[0].options.includes(position))
+                  this.options[0].options.push(position)
+                const index = data[i].staff.position.indexOf('（')
+                const subStr = data[i].staff.position.substring(index + 1, data[i].staff.position.length - 1)
+                if(!this.options[2].options.includes(subStr))
+                  this.options[2].options.push(subStr)
+              }
+              else if(!data[i].staff.position.includes('（')){
+                if(!this.options[0].options.includes(data[i].staff.position))
+                  this.options[0].options.push(data[i].staff.position)
+              }
+            }
+            if(!this.options[1].options.includes(data[i].staff.name)&&data[i].staff.name)
+              this.options[1].options.push(data[i].staff.name)
+            index+=1
+          }
+        }
       }
       this.newData=this.tableData
     },
@@ -2525,13 +1519,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.pageArray = this.mondayAndSunday.map(({monday, sunday}) => {
-      // 使用 Moment.js 进行日期格式化，格式化后的字符串可以按需要进行调整
-      return `${moment(monday).format('YYYY/MM/DD')} - ${moment(sunday).format('YYYY/MM/DD')}`;
-    })
-    console.log(this.pageArray)
-  }
 }
 </script>
 
