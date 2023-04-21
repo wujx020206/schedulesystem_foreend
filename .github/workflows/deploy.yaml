@@ -1,0 +1,39 @@
+name: Deploy to server
+
+on: [push]
+
+jobs:
+    deploy:
+        name: Build and Run
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                node-version: '16.16.0'
+            - run: yarn install
+              name: installing dependencies
+            - run: yarn build:prod
+              name: building project
+            - name: tar dist directory
+              run: tar -czvf foreend.tar.gz dist
+            - name: upload tar file to server
+              uses: garygrossgarten/github-action-scp@release
+              with:
+                local: foreend.tar.gz
+                remote: github-upload/foreend.tar.gz
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.SSH_USER }}
+                password: ${{ secrets.SSH_PASSWORD }}
+            - name: unzip and run
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.SSH_USER }}
+                password: ${{ secrets.SSH_PASSWORD }}
+                script: |
+                  cd github-upload
+                  rm -rf dist
+                  tar -zxvf foreend.tar.gz
+                  rm -rf /var/www/html/vue
+                  mv dist /var/www/html/vue
