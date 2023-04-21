@@ -13,7 +13,7 @@ jobs:
                 node-version: '16.16.0'
             - run: yarn install
               name: installing dependencies
-            - run: yarn build:prod
+            - run: yarn build
               name: building project
             - name: tar dist directory
               run: tar -czvf foreend.tar.gz dist
