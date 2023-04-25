@@ -130,6 +130,8 @@ export default {
               case 2:item.type='班次时长偏好'
                 break
             }
+            if(!item.value)
+              item.value='默认'
           })
         },
         re=>{
